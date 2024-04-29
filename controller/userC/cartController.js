@@ -10,7 +10,6 @@ const loadcartpage = async function(req, res) {
   try {
     
       const userId = req.session.user._id;
-      console.log(userId);
       const data = await cartModel.find({ userId: userId }).populate('items.product')
       //sorting for latest added product at top-----
       data.forEach(cart => {
