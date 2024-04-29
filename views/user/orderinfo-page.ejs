@@ -1,0 +1,394 @@
+<%- include('../partials/userheader') %>
+<style>
+  /* Add your custom CSS styles here */
+  .content-main {
+      border-left: 1px solid #e5e5e5;
+      border-right: 1px solid #e5e5e5;
+      padding: 15px 150px; /* Optional: Add padding for spacing */
+  }
+</style>
+
+<div class="page-header breadcrumb-wrap">
+  <div class="container">
+      <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Profile
+          <span></span> Dashboard
+      </div>
+    </div>
+  </div>
+
+<section class="content-main">
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title">Order detail</h2>
+          <p>Details for Order ID: <%= orderData[0]._id.toString().substring(orderData[0]._id.toString().length - 5) %></p>
+      </div>
+  </div>
+  <div class="card">
+      <header class="card-header">
+          <div class="row align-items-center">
+              <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+               
+                    <span>
+                      <i class="material-icons md-calendar_today"></i> <b><%= orderData[0].orderDate.toDateString() %></b>
+                    </span> <br>
+                 
+                  <small class="text-muted"><%= orderData[0]._id.toString().substring(orderData[0]._id.toString().length - 5) %></small>
+              </div>
+              
+          </div>
+      </header> <!-- card-header end// -->
+      <div class="card-body">
+          <div class="row mb-50 mt-20 order-info-wrap">
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-person"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Customer</h6>
+                          <p class="mb-1">
+                            <%= user.name %> <br> <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template> <br>+91  <%= orderData[0].billingDetails.mobile %>
+                          </p>
+                          <a href="#">View profile</a>
+                      </div>
+                  </article>
+              </div> <!-- col// -->
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-local_shipping"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Order info</h6>
+                          <p class="mb-1">
+                              Shipping: FedEx <br> Payment method: <%= orderData[0].paymentMethod %>  <br>
+                              Payment status: <%= orderData[0].paymentStatus %>
+                          </p>
+                      </div>  
+                  </article>
+              </div> <!-- col// -->
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-place"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Deliver to</h6>
+                          <% const billingDetails = orderData[0].billingDetails; %>
+                                <p>
+                                    <%= billingDetails.name %>,<br>
+                                    <%= billingDetails.houseName %>,<br>
+                                    <%= billingDetails.district %>, <%= billingDetails.state %>,<br>
+                                    Pincode:<%= billingDetails.pincode %>,<br> 
+                                    <%= billingDetails.country %>                             
+                                </p>
+                          <a href="#">View profile</a>
+                      </div>
+                  </article>
+              </div> <!-- col// -->
+          </div> <!-- row // -->
+          <div class="row">
+              <div class="col-lg-7">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th width="40%"  class="text-center">Product</th>
+                                  <th width="20%" class="text-center">Regular Price</th>
+                                  <th width="20%" class="text-center">Quantity</th>
+                                  <th width="20%" class="text-center">Delivery Status</th>
+                                  <th width="20%" class="text-center">Sub-Total</th>
+                                  <th width="20%" class="text-center">Cancel Order</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <% orderData[0].items.forEach((item, itemIndex) => { %>
+                              <tr>
+                                  <td>
+                                      <a class="itemside" href="#">
+                                          <div class="left">
+                                              <img src="/public/photos/<%= item.product.productImage[0] %>" width="40" height="40" class="img-xs" alt="Item">
+                                          </div>
+                                          <div class="info">  <%= item.product.productName %></div>
+                                      </a>
+                                  </td>
+                                  <td  class="text-center"><%= item.product.regularPrice %></td>
+                                  <td class="text-center"><%= item.quantity %></td>
+                                  <td class="text-center" id="status_<%= item._id %>"><%= item.status %></td>   
+
+                                    <% if (item.cancelmessage) { %>
+                                        <span class="ms-2 text-danger">Order cancelled by admin!</span>
+                                      <% } %>
+                                                             
+                                  <td class="text-center"><%= item.price*item.quantity %> </td>
+
+                                  <td class="text-center">
+                                    <% if (item.status === 'Delivered' || item.status ==='Returned') { %>
+                                        <button id="returnBtn-<%= item._id %>" onclick="returnOrder('<%= orderData[0]._id  %>', '<%= item._id %>')" class="btn btn-success" <% if (item.status === 'Returned') { %>disabled<% } %>>Return</button>
+                                      <% } else { %>
+                                    <button id="cancelBtn-<%= item._id %>" class="btn btn-danger" style="border: 1px solid #ccc; padding: 8px 16px; color: #fff; cursor: pointer; transition: background-color 0.3s;"
+                                        onclick="cancelProduct('<%= orderData[0]._id %>', '<%= item._id %>')" <% if (item.status === 'Cancelled'|| orderData[0].paymentMethod === 'RazorPay' && orderData[0].paymentStatus === 'Pending') { %>disabled<% } %>>Cancel</button>
+                                    <% } %> 
+                                </td> 
+
+                              </tr>
+                              <% }); %>
+                            
+                          </tbody>
+                      </table>
+                  </div> <!-- table-responsive// -->
+              </div> <!-- col// -->
+              <div class="col-lg-3 offset-lg-1">
+                <div class="box bg-light p-3">
+                  <h6 class="mb-3" style="font-size: 1.2rem;">Payment Information</h6>
+                  <div class="payment-info" style="font-size: 1.1rem; font-weight: bold;">
+                      Cash on Delivery
+                  </div>
+                    <div class="mt-4">
+                        <p><strong>Coupon Discount:</strong>₹<%= orderData[0].couponDiscount %></p>
+                        <p><strong>Shipping cost:</strong><span class="text-success">Free Shipping</span></p>
+                        <p><strong>Grand total:</strong>₹<%= orderData[0].totalPrice %> </p>
+                        <p><strong>Status:</strong> <span class="text-danger"><%= orderData[0].paymentStatus %></span></p>
+                    </div>
+                    <% if (orderData[0].paymentMethod === 'RazorPay' && orderData[0].paymentStatus === 'Pending') { %>
+                        <div class="text-center mt-3">
+                          <button id="retryPaymentBtn" class="btn btn-primary">Retry Payment</button>
+                        </div>
+                      <% } %>
+
+                </div>
+            </div>
+           </div>
+      </div> <!-- card-body end// -->
+  </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+function cancelProduct(orderId, productId) {
+
+    fetch('/cancelorder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ orderId, productId })
+    })
+    .then(response => {
+        if (response.ok) {
+            Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Product cancelled successfully.',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+            document.getElementById(`status_${productId}`).textContent = 'Cancelled';
+
+
+            // Disable the cancel button
+            const cancelBtn = document.getElementById(`cancelBtn-${productId}`);
+                    if (cancelBtn) {
+                        cancelBtn.disabled = true;
+                        cancelBtn.style.opacity = 0.5;
+                        cancelBtn.style.pointerEvents = 'none';
+                        cancelBtn.style.filter = 'blur'; 
+                        localStorage.setItem(`cancelBtnDisabled-${productId}`, 'true');
+                    }
+
+        } else {
+            throw new Error('Failed to cancel product.');
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error cancelling product. Please try again.',
+        showConfirmButton: false,
+        timer: 3000});});
+
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const disabledBtns = document.querySelectorAll('[id^="cancelBtn-"]');
+    disabledBtns.forEach(btn => {
+        const productId = btn.id.split('-')[1];
+        const isDisabled = localStorage.getItem(`cancelBtnDisabled-${productId}`);
+        if (isDisabled) {
+            // btn.disabled = true;
+            // btn.style.opacity = 0.5;
+            // btn.style.pointerEvents = 'none';
+            // btn.style.filter = 'blur(2px)';
+        }
+    });
+});
+
+
+//--------------return order--------------------------------------------------------------------
+
+function returnOrder(orderId, productId) {
+
+fetch('/returnorder', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ orderId, productId })
+})
+.then(response => {
+    if (response.ok) {
+        alert('Product returned successfully.');
+        document.getElementById(`status_${productId}`).textContent = 'Returned';
+
+
+        // Disable the cancel button
+        const cancelBtn = document.getElementById(`returnBtn-${productId}`);
+                if (cancelBtn) {
+                    cancelBtn.disabled = true;
+                    cancelBtn.style.opacity = 0.5;
+                    cancelBtn.style.pointerEvents = 'none';
+                    cancelBtn.style.filter = 'blur'; 
+                    localStorage.setItem(`returnBtnDisabled-${productId}`, 'true');
+                }
+
+    } else {
+        throw new Error('Failed to return product.');
+    }
+})
+.catch(error => {
+    console.error('Error cancelling product:', error);
+    alert('Error cancelling product. Please try again.');
+});
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+const disabledBtns = document.querySelectorAll('[id^="returnBtn-"]');
+disabledBtns.forEach(btn => {
+    const productId = btn.id.split('-')[1];
+    const isDisabled = localStorage.getItem(`returnBtnDisabled-${productId}`);
+    if (isDisabled) {
+        // btn.disabled = true;
+        // btn.style.opacity = 0.5;
+        // btn.style.pointerEvents = 'none';
+        // btn.style.filter = 'blur(2px)';
+    }
+});
+});
+
+//--------------------------------------------------------------------------------------------
+// document.addEventListener('DOMContentLoaded', function () {
+//   const retryPaymentBtn = document.getElementById('retryPaymentBtn');
+
+//   retryPaymentBtn.addEventListener('click', async (e) => {
+//     e.preventDefault();
+
+//     // Initialize Razorpay
+//     const rzp = new Razorpay({
+//       key: 'rzp_test_ouYvdm0lXOR287', // Replace with your actual Razorpay key
+//       amount: '<%= orderData[0].totalPrice * 100 %>',
+//       currency: 'INR',
+//       name: "Lacelux",
+//       description: "Purchase Description",
+//       image: "https://example.com/logo.png",
+//       handler: async function (response) {
+//         console.log('Razorpay payment successful:', response);
+//         // Update the href attribute of the retryPaymentBtn
+//         retryPaymentBtn.href = `/retryorder/<%= orderData[0]._id %>`;
+
+//         // Trigger the navigation programmatically
+//         retryPaymentBtn.click();
+//       },
+//       prefill: {
+//         name: "<%= orderData[0].name %>",
+//         email: "<%= orderData[0].email %>",
+//         contact: "<%= orderData[0].mobile %>",
+//       },
+//       theme: {
+//         color: "#3399cc",
+//       },
+//     });
+
+//     // Open Razorpay payment dialog
+//     rzp.open();
+//   });
+// });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const retryPaymentBtn = document.getElementById('retryPaymentBtn');
+
+  retryPaymentBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    // Initialize Razorpay
+    const rzp = new Razorpay({
+      key: 'rzp_test_ouYvdm0lXOR287', // Replace with your actual Razorpay key
+      amount: '<%= orderData[0].totalPrice * 100 %>',
+      currency: 'INR',
+      name: "Lacelux",
+      description: "Purchase Description",
+      image: "https://example.com/logo.png",
+      handler: async function (response) {
+        console.log('Razorpay payment successful:', response);
+
+        // Log the order ID for debugging
+        const orderId = '<%= orderData[0]._id %>';
+        console.log('Order ID for updating payment status:', orderId);
+
+        try {
+          // Perform an AJAX request to retry the payment
+          const response = await fetch(`/retryorder/${orderId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to retry payment');
+          }
+
+          const responseData = await response.json();
+        
+          console.log('Payment retried successfully');
+          console.log('Response Data:', responseData);
+
+          window.location.href = `/retrythankyoupage?orderId=${ responseData.orderId}`;
+
+
+        } catch (error) {
+          console.error('Error retrying payment:', error);
+          // Handle the error or display a message to the user
+        }
+      },
+      prefill: {
+        name: "<%= orderData[0].name %>",
+        email: "<%= orderData[0].email %>",
+        contact: "<%= orderData[0].mobile %>",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    });
+
+    // Open Razorpay payment dialog
+    rzp.open();
+  });
+});
+
+
+</script>
+
+
+
+</script>
+
+<%- include ('../partials/userfooter') %>

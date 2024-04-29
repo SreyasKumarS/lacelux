@@ -1,0 +1,149 @@
+<%- include('../partials/userheader') %>
+<style>
+  .content-main {
+    display: flex;
+    justify-content: space-between;
+    padding: 100px; /* Added padding around the sections for space from the borders */
+    gap: 15px; /* Reduced gap between the wallet and transaction sections */
+  }
+  .wallet-section {
+    flex: 0 0 350px; /* Width remains the same */
+    height: 220px; /* Increased height */
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures spacing inside the wallet section */
+  }
+  .transactions-section {
+    flex: 0 0 700px; /* Maintain the width of the transactions section */
+    padding: 15px;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+  }
+  .form-control {
+    width: 100%;
+    margin-top: 5px;
+    background-color: #ffffff; /* Sets the background color of the input box to white */
+    border: 1px solid #ccc; /* Adds a subtle border to the input box */
+  }
+  .btn {
+    width: 100%;
+    margin-top: 5px;
+  }
+  .d-flex.flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+  .table-hover th, .table-hover td {
+    padding: 8px 12px;
+  }
+</style>
+
+<div class="referral-message" style="text-align: center;">
+  <h2 style="font-size: 24px; font-family: 'Arial', sans-serif;">
+      Refer and Earn ₹1000, and the referral also gets ₹1000!
+  </h2>
+  <p style="font-size: 20px;">
+      Share your referral code: <span style="font-weight: bold;"> <%= userreferral.referralCode %></span>
+  </p>
+</div>
+
+
+
+<section class="content-main">
+
+  
+  <div class="wallet-section">
+
+    <div>  
+      <h3>My Wallet</h3>
+      <p><strong>Balance:</strong> ₹<%= wallet.balance %></p>
+      <p><strong>Referral Code:</strong> <%= userreferral.referralCode %></p> <!-- Display the referral code here -->
+
+    </div>
+   
+    <form id="depositForm" action="/depositwallet" method="POST"> 
+      <div class="d-flex flex-column">
+        <input type="number" class="form-control" name="payment_amount" placeholder="Enter deposit amount" required>
+
+        <button type="submit" class="btn btn-primary">Deposit</button>
+      </div>
+    </form>
+  </div>
+  
+  
+  <div class="transactions-section">
+    <h2 class="content-title">Transactions</h2>
+    <table class="table table-hover">
+        <thead>
+          
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach(transaction => { %>
+          <tr>
+            <td><%= transaction.date %></td>
+            <td><%= transaction.status %></td>
+            <td><%= transaction.amount %></td>
+            <td><%= transaction.type %></td>
+          </tr> 
+       <% }); %>
+        </tbody>
+    </table>
+  </div>
+</section>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+
+
+document.getElementById('depositForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const amount = formData.get('payment_amount');
+
+
+  var options = {
+      key: 'rzp_test_ouYvdm0lXOR287',
+      amount: amount * 100,
+      currency: "INR",
+      name: "Lacelux",
+      description: "Purchase Description",
+      image: "https://example.com/logo.png",
+
+      handler: function (response) {
+          console.log(response);
+          console.log("Payment successful");
+
+          e.target.submit();
+      },
+
+      prefill: {
+          name: "<%= user.name %>",
+          email: "<%= user.email %>",
+        
+      },
+      theme: {
+          color: "#3399cc",
+      },
+  };
+
+  var rzp = new Razorpay(options);
+  rzp.open();
+});
+
+
+</script>
+
+<%- include('../partials/userfooter') %>

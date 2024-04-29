@@ -1,0 +1,167 @@
+<%- include('../partials/userheader') %>
+
+
+
+<section>
+  <div class="container custom-container mt-4  " >
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card-header">
+            <h5>Edit address</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/updateuserdetails?id=<%= address._id %>" name="enq" onsubmit="return validateForm()">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Name <span class="required">*</span></label>
+                        <input required="" class="form-control square" name="name" id="name" type="text"  value="<%= address.name %>" >
+                        <div id="name-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Mobile Number<span class="required">*</span></label>
+                        <input required="" class="form-control square" name="mobile"  id="mobile" value="<%= address.mobile %>">
+                        <div id="mobile-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Pincode<span class="required">*</span></label>
+                        <input required="" class="form-control square" name="pincode" type="text" id="pincode" value="<%= address.pincode %>">
+                        <div id="pincode-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>House Name<span class="required">*</span></label>
+                        <input required="" class="form-control square" name="houseName" id="houseName" type="text" value="<%= address.houseName %>">
+                        <div id="houseName-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Town/city<span class="required">*</span></label>
+                        <input required="" class="form-control square" name="cityOrTown"  id="cityOrTown" type="text"  value="<%= address.cityOrTown %>">
+                        <div id="cityOrTown-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>District<span class="required">*</span></label>
+                        <select required="" class="form-control square" name="district">
+                            <option value=""><%= address.district %>▼</option>
+                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="Kollam">Kollam</option>
+                            <option value="Alappuzha">Alappuzha</option>
+                            <option value="Pathanamthitta">Pathanamthitta</option>
+                            <option value="Kottayam">Kottayam</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>State<span class="required">*</span></label>
+                        <select required="" class="form-control square" name="state">
+                            <option value=""><%= address.state %>▼</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Telangana">Telangana</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Country <span class="required">*</span></label>
+                        <select required="" class="form-control square" name="country">
+                            <option value=""><%= address.country %>▼</option>
+                            <option value="India">India</option>
+                            <option value="India">USA</option>
+                            <option value="India">London</option>
+                            <option value="India">Canada</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Update</button>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+   </div> 
+</div>
+
+</section>
+
+
+
+<script>
+function validateForm() {
+    let isValid = true;
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const pincode = document.getElementById("pincode").value.trim();
+    const houseName = document.getElementById("houseName").value.trim();
+    const cityOrTown = document.getElementById("cityOrTown").value.trim();
+
+    // Validation for Name
+    if (name === "") {
+        displayErrorMessage("name-error", "Name is required.");
+        isValid = false;
+    } else if (!isNameValid(name)) {
+        displayErrorMessage("name-error", "Name should only contain alphabets.");
+        isValid = false;
+    }
+
+    // Validation for Mobile Number
+    if (mobile === "") {
+        displayErrorMessage("mobile-error", "Mobile Number is required.");
+        isValid = false;
+    } else if (!/^\d{10}$/.test(mobile)) {
+        displayErrorMessage("mobile-error", "Mobile Number should be 10 digits.");
+        isValid = false;
+    }
+
+    // Validation for Pincode
+    if (pincode === "") {
+        displayErrorMessage("pincode-error", "Pincode is required.");
+        isValid = false;
+    } else if (!/^\d{6}$/.test(pincode)) {
+        displayErrorMessage("pincode-error", "Pincode should be 6 digits.");
+        isValid = false;
+    }
+
+    // Validation for House Name
+    if (houseName === "") {
+        displayErrorMessage("houseName-error", "House Name is required.");
+        isValid = false;
+    }
+
+    // Validation for City or Town
+    if (cityOrTown === "") {
+        displayErrorMessage("cityOrTown-error", "Town/City is required.");
+        isValid = false;
+    } else if (containsNumbers(cityOrTown)) {
+        displayErrorMessage("cityOrTown-error", "Town/City should not contain numbers.");
+        isValid = false;
+    }
+    return isValid;
+}
+
+
+function isNameValid(name) {
+    return /^[A-Za-z]+$/.test(name);
+}
+
+function containsNumbers(input) {
+    return /\d/.test(input);
+}
+
+
+function displayErrorMessage(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.style.color = "red";
+}
+</script>
+
+<%- include('../partials/userfooter') %>

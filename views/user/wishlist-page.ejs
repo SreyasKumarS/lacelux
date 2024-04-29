@@ -1,0 +1,141 @@
+<%- include('../partials/userheader') %>
+
+<main class="main">
+  <div class="page-header breadcrumb-wrap">
+      <div class="container">
+          <div class="breadcrumb">
+              <a href="index.html" rel="nofollow">Home</a>
+              <span></span> Shop
+              <span></span> Wishlist
+          </div>
+      </div>
+  </div>
+  <section class="mt-50 mb-50">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <div class="table-responsive">
+                      <table class="table shopping-summery text-center">
+                          <thead>
+                              <tr class="main-heading">
+                                  <th scope="col" colspan="2">Product</th>
+                                  <th scope="col">Price</th>
+                                  <th scope="col">Stock Status</th>
+                                  <th scope="col">Action</th>
+                                  <th scope="col">Remove</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <% if (!data || data.items.length === 0  ) { %>
+                            <tr>
+                              <td colspan="6" class="text-center text-danger">Your wishlist is empty</td>
+                            </tr>
+                            <% } else { %>
+                           <% data.items.forEach((row, index) => { %>
+                              <tr>
+                                <td class="image product-thumbnail"><img src="/public/photos/<%= row.product.productImage[0] %>" alt=" "></td>
+
+                                  <td class="product-des product-name">
+                                      <p class="font-xs"><%= row.product.productName %>
+                                      </p>
+                                  </td>
+                                  <td class="price" data-title="Price"><span><%= row.product.regularPrice %></span></td>
+                                  <td class="text-center" data-title="Stock">
+                                      <span class="color3 font-weight-bold"><%= row.product.stock %></span>
+                                  </td>
+
+                                  <td class="text-right" data-title="Cart">
+                                    <% if (user) { %>
+                                      <button id="addToCartBtn" type="button" class="btn btn-sm" onclick="addToCart('<%= row.product._id %>', this)">
+                                        <i class="fi-rs-shopping-bag mr-5"></i>Add to cart
+                                      </button>
+                                    
+                                    <% } else { %>
+                                      <button type="button" class="btn btn-sm" onclick="redirectToLogin()">
+                                        <i class="fi-rs-shopping-bag mr-5"></i>Add to cart
+                                      </button>
+                                    <% } %>
+                                  </td>
+                                  <td class="action" data-title="Remove"><a href="#">
+                                    <i class="fi-rs-trash" onclick="removeProduct('<%= row.product._id %>')"></i></a></td>
+                              </tr> 
+                              <% }); %>      
+                              <% } %>                  
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+function addToCart(productId, buttonElement) {
+    fetch(`/cartpagefunction/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.isInCart) {
+                buttonElement.innerText = 'View in Cart';
+                buttonElement.addEventListener('click', function() {
+                    window.location.href ='/cartpage';
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+    function redirectToLogin() {
+        try {
+            window.location.href = '/userlogin'; // Redirect to login page
+        } catch (error) {
+            console.error('Error redirecting to login page:', error);
+        }
+    }
+
+
+//--------------------------------------------------------------------------
+  
+function removeProduct(productid) {
+  let confirmationMessage = "Are you sure you want to remove the product?";
+
+  Swal.fire({
+    text: confirmationMessage,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Remove",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: `/removeProductFromwishlist?id=${productid}`,
+        method: 'PATCH',
+        contentType: 'application/json',
+        success: function(data) {
+          console.log(data.success);
+          if (data.success === true) {
+            const divToDelete = document.getElementById(productid);
+            if (divToDelete) {
+              divToDelete.remove();
+            }  
+            Swal.fire("Product removed!", "", "success");
+            location.reload();
+          } else {
+            console.error('Removal failed');
+          }
+        },
+        error: function(error) {
+          Swal.fire("Oops!", "Failed to remove the product. Please try again.", "error");
+          console.error('AJAX error:', error);
+        }
+      });
+    }
+  });
+}
+
+
+</script>
+
+<%- include('../partials/userfooter') %>

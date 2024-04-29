@@ -1,0 +1,68 @@
+<%- include ('../partials/adminHeader') %>
+
+
+  </header>
+  <section class="content-main">
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title">Order Management </h2>
+          </div> 
+      </div>
+      <div class="card mb-4">
+          <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>Order ID</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Total</th>
+                              <th scope="col">Order Date</th>
+                              <th scope="col"> Action </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <% orderData.forEach((data, Index) => { %>
+                          <tr>
+                              <td><%= data._id.toString().substring(data._id.toString().length - 5) %></td>
+                              <td><b><%= data.userID ? data.userID.name : 'N/A' %></b></td>
+                            <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">   
+                            </template><%= data.userID ? data.userID.email : 'N/A' %></td>
+
+                              <td>₹<%= data.totalPrice %></td>
+                              <td><%= data.orderDate ? data.orderDate.toDateString() : 'N/A' %></td>
+
+                              <td class="detail">
+                                <a href="/adminorderinfopage?id=<%= data._id %>&user=<%= data.userID ? data.userID._id : '' %>" class="btn btn-md rounded font-sm">Detail</a>
+
+                                  <div class="dropdown">
+                                      <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                     
+                                  </div> <!-- dropdown //end -->
+                              </td>
+                          </tr>
+                      </tbody>
+                      <% }) %>
+                  </table>
+              </div> <!-- table-responsive //end -->
+          </div> <!-- card-body end// -->
+      </div> <!-- card end// -->
+  </section> <!-- content-main end// -->
+  <footer class="main-footer font-xs">
+      <div class="row pb-30 pt-15">
+          <div class="col-sm-6">
+              <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+              document.write(new Date().getFullYear())
+              </script> ©, Evara - HTML Ecommerce Template .
+          </div>
+          <div class="col-sm-6">
+              <div class="text-sm-end">
+              </div>
+          </div>
+      </div>
+  </footer>
+</main>
+
+
+<%- include ('../partials/adminfooter') %>

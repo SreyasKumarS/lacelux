@@ -1,0 +1,138 @@
+
+    <%- include ('../partials/userheader') %>
+
+    <div class="container my-4">
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                    <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
+                    <ul class="categories">
+                        <li>
+                            <a  class="section-title mb-30 wow fadeIn animated " href="/categoryFilter/">All</a>
+                        </li>
+                        <% categories.forEach(category => { %>
+                        <li>
+                            <a class="section-title mb-30 wow fadeIn animated" href="/categoryFilter/<%= category._id %>"><%= category.name %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-10">
+                <div class="sort-by-cover">
+                    <div class="sort-by-product-wrap">
+                        <div class="dropdown" style=" bottom: 9px ;">
+                            <button class="dropdown-button" style="margin-right: 20px;" onclick="toggleDropdown()">
+                                <i class="fi-rs-apps-sort"></i> Sort by: <span style="color: rgb(12, 22, 164);"><%= selectedSortOption %></span>
+                            </button>
+                            <div class="dropdown-content" id="dropdown-content">
+                                <a href="/usershop/<%= text %>?sortBy=Price: Low to High">Price: Low to High</a>
+                                <a href="/usershop/<%= text %>?sortBy=Price: High to Low">Price: High to Low</a>
+                                <a href="/usershop/<%= text %>?sortBy=aA - zZ">aA - zZ</a>
+                                <a href="/usershop/<%= text %>?sortBy=zZ - aA">zZ - aA</a>
+                                <a href="/usershop/<%= text %>?sortBy=New Arrivals">New Arrivals</a>
+                                <a href="/usershop/<%= text %>?sortBy=All Products">All Products</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content wow fadeIn animated" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                        <div class="row product-grid-3">
+                            <% data.forEach((row,index) => { %>
+                            <% if (!row.isBlocked && row.category.islisted) { %>
+                            <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="/productdetails/<%= row._id %>">
+                                                <img class="default-img" src="/public/photos/<%= row.productImage[0] %>"
+                                                    alt="<%= row.productName %> ">
+                                                <img class="hover-img" src="/public/photos/<%= row.productImage[2] %>"
+                                                    alt="<%= row.productName %>">
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="product-action-1 show">
+                                            <a aria-label="Add To Cart" class="action-btn hover-up" href="#"
+                                                onclick="addToCart('<%= row._id %>');"><i
+                                                    class="fi-rs-shopping-bag-add"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a href="/productdetails/<%= row._id %>"><%= row.category.name %></a>
+                                        </div>
+                                        <h2><a href="/productdetails/<%= row._id %>"><%= row.productName %></a></h2>
+                                        <div class="rating-result" title="90%">
+                                            <span>
+                                                <span>90%</span>
+                                            </span>
+                                        </div>
+                                        <div class="product-price">
+                                            <% if (row.discount>0) { %>
+                                                <span>Offerprice - ₹<%= row.regularPrice %></span>
+                                                <span class="old-price"><s>₹<%= row.oldPrice %></s></span>
+                                            <% } else { %>
+                                                <span>₹<%= row.regularPrice %></span>            
+                                                <span class="old-price">₹<%= row.discount %></span>      
+                                            <% } %>
+                                        </div>
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+                            <% } %>
+                            <% }); %>
+                        </div>
+                    </div>
+                </div>
+                <div class="pagination-area mt-15 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="?page=<%= i %>&sortBy=<%= selectedSortOption %>"><%= i %></a>
+                            </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include ('../partials/userfooter') %>
+
+<script>
+
+function toggleDropdown() {
+    var dropdownContent = document.getElementById("dropdown-content");
+    if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+    } else {
+        dropdownContent.style.display = "block";
+    }
+}
+
+function addToCart(productId) {
+    fetch(`/cartpagefunction/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                window.location.href = '/cartpage'; //
+            } else {
+                console.log('Product added to cart.');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding product to cart:', error);
+        });
+}
+
+
+</script>

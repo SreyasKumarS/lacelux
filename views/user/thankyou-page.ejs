@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    p {
+      color: #666;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .btn {
+      display: block;
+      width: 200px;
+      margin: 20px auto;
+      padding: 10px;
+      text-align: center;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Thank You!</h1>
+
+    <% if(order.paymentMethod === 'RazorPay' && order.paymentStatus === 'Pending') { %>
+
+      <p>Your order has not been completed due to Payment Failure</p>
+      <p>Try retrying payment from your Order Page</p>
+      <a href="/profilepage" class="btn">Go to Order page</a>
+    <% }else{ %>
+
+    <p>Your order has been successfully placed.</p>
+    <p>Thank you for shopping with us!</p>
+    <a href="/" class="btn">Back to Home</a>
+  
+    <!-- Add a button for downloading the invoice -->
+    <a href="/generateInvoice?orderId=<%= orderId %>&userId=<%= userId %>" class="btn">Download Invoice</a>
+
+    <% } %>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,254 @@
+<%- include('../partials/adminHeader') %>
+<style>
+  /* Add your custom CSS styles here */
+  .content-main {
+      border-left: 1px solid #e5e5e5;
+      border-right: 1px solid #e5e5e5;
+      padding: 15px 80px; /* Optional: Add padding for spacing */
+  }
+</style>
+
+<div class="page-header breadcrumb-wrap">
+  <div class="container">
+      <div class="breadcrumb">
+          <a href="/" rel="nofollow">Home</a>
+          <span></span> Profile
+          <span></span> Dashboard
+      </div>
+    </div>
+  </div>
+
+<section class="content-main">
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title">Order detail</h2>
+          <p>Details for Order ID: <%= orderData[0]._id.toString().substring(orderData[0]._id.toString().length - 5) %></p>
+      </div>
+  </div>
+  <div class="card">
+      <header class="card-header">
+          <div class="row align-items-center">
+              <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+               
+                    <span>
+                      <i class="material-icons md-calendar_today"></i> <b><%= orderData[0].orderDate.toDateString() %></b>
+                    </span> <br>
+                 
+                  <small class="text-muted"><%= orderData[0]._id.toString().substring(orderData[0]._id.toString().length - 5) %></small>
+              </div>
+              
+          </div>
+      </header> <!-- card-header end// -->
+      <div class="card-body">
+          <div class="row mb-50 mt-20 order-info-wrap">
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-person"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Customer</h6>
+                          <p class="mb-1">
+                            <%= user.name %> <br> <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template> <br>+91  <%= orderData[0].billingDetails.mobile %>
+                          </p>
+                          <a href="#">View profile</a>
+                      </div>
+                  </article>
+              </div> <!-- col// -->
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-local_shipping"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Order info</h6>
+                          <p class="mb-1">
+                              Shipping: FedEx <br> Pay method: <%= orderData[0].paymentMethod %> 
+                          </p>
+                      </div>
+                  </article>
+              </div> <!-- col// -->
+              <div class="col-md-4">
+                  <article class="icontext align-items-start">
+                      <span class="icon icon-sm rounded-circle bg-primary-light">
+                          <i class="text-primary material-icons md-place"></i>
+                      </span>
+                      <div class="text">
+                          <h6 class="mb-1">Deliver to</h6>
+                          <% const billingDetails = orderData[0].billingDetails; %>
+                                <p>
+                                    <%= billingDetails.name %>,<br>
+                                    <%= billingDetails.houseName %>,<br>
+                                    <%= billingDetails.district %>, <%= billingDetails.state %>,<br>
+                                    Pincode:<%= billingDetails.pincode %>,<br> 
+                                    <%= billingDetails.country %>                             
+                                </p>
+                          <a href="#">View profile</a>
+                      </div>
+                    </article>
+              </div> <!-- col// -->
+          </div> <!-- row // -->
+          <div class="row">
+              <div class="col-lg-7">
+                  <div class="table-responsive">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th width="40%"  class="text-center">Product</th>
+                                  <th width="20%" class="text-center">Regular Price</th>
+                                  <th width="20%" class="text-center">Quantity</th>
+                                  <th width="20%" class="text-center">Delivery Status</th>
+                                  <th width="20%" class="text-center">Sub-Total</th>
+                                  <th width="20%" class="text-center">Status updation</th>
+                                  <th width="20%" class="text-center">Cancel Order</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <% orderData[0].items.forEach((item, itemIndex) => { %>
+                              <tr>
+                                  <td>
+                                      <a class="itemside" href="#">
+                                          <div class="left">
+                                              <img src="/public/photos/<%= item.product.productImage[0] %>" width="40" height="40" class="img-xs" alt="Item">               
+                                          </div>
+                                          <div class="info"><%= item.product.productName %></div>
+                                      </a>
+                                  </td>
+                                  <td  class="text-center"><%= item.product.regularPrice %></td>
+                                  <td class="text-center"><%= item.quantity %></td>
+                                  <td><span class="badge rounded-pill alert-info" id="status_<%= item._id %>"><%= item.status %></span></td>
+                                  <td class="text-center"><%= item.price*item.quantity %> </td>
+
+
+                                  <td  class="text-center">
+                                    <select class="form-select" onchange="updateStatus('<%= item._id %>', this.value)">
+                                        <option value="Shipped" <%= item.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                                        <option value="Delivered" <%= item.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                                        <option value="Pending" <%= item.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                                    </select>
+                                    
+                                </td>
+                                  <td class="text-center">
+                                    <button id="cancelBtn-<%= item._id %>" class="btn btn-danger" style="border: 1px solid #ccc; padding: 8px 16px;  color: #fff; cursor: pointer; transition: background-color 0.3s;"
+                                        onclick="cancelProduct('<%= orderData[0]._id %>', '<%= item._id %>')" <% if (item.status === 'Cancelled' || item.status === 'Returned' || item.status === 'Delivered') { %>disabled<% } %>>Cancel</button>
+                                </td>                              
+                              </tr>
+                              <% }); %>
+                            
+                          </tbody>
+                      </table>
+                  </div> <!-- table-responsive// -->
+              </div> <!-- col// -->
+              <div class="col-lg-3 offset-lg-1">
+                <div class="box bg-light p-3">
+                  <h6 class="mb-3" style="font-size: 1.2rem;">Payment Information</h6>
+                  <div class="payment-info" style="font-size: 1.1rem; font-weight: bold;">
+                      Cash on Delivery
+                  </div>
+                    <div class="mt-4">
+                        <p><strong>Subtotal:</strong>₹<%= orderData[0].totalPrice %></p>
+                        <p><strong>Shipping cost:</strong><span class="text-success">Free Shipping</span></p>
+                        <p><strong>Grand total:</strong>₹<%= orderData[0].totalPrice %> </p>
+                        <p><strong>Status:</strong> <span class="text-danger">Pending</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            
+          </div>
+      </div> <!-- card-body end// -->
+  </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+<script>
+function cancelProduct(orderId, productId) {
+
+    fetch('/cancelorder?admin=1',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ orderId, productId })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Product cancelled successfully.');
+            document.getElementById(`status_${productId}`).textContent = 'Cancelled';
+
+            const cancelBtn = document.getElementById(`cancelBtn-${productId}`);
+                    if (cancelBtn) {
+                        cancelBtn.disabled = true;
+                        cancelBtn.style.opacity = 0.5;
+                        cancelBtn.style.pointerEvents = 'none';
+                        cancelBtn.style.filter = 'blur'; 
+                        localStorage.setItem(`cancelBtnDisabled-${productId}`, 'true');
+                    }
+
+        } else {
+            throw new Error('Failed to cancel product.');
+        }
+    })
+    .catch(error => {
+        console.error('Error cancelling product:', error);
+        alert('Error cancelling product. Please try again.');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const disabledBtns = document.querySelectorAll('[id^="cancelBtn-"]');
+    disabledBtns.forEach(btn => {
+        const productId = btn.id.split('-')[1];
+        const isDisabled = localStorage.getItem(`cancelBtnDisabled-${productId}`);
+        if (isDisabled) {
+            // btn.disabled = true;
+            // btn.style.opacity = 0.5;
+            // btn.style.pointerEvents = 'none';
+            // btn.style.filter = 'blur(2px)';
+        }
+    });
+});
+
+
+
+
+
+
+
+
+function updateStatus(itemId, newStatus) {
+
+    const currentStatus = document.getElementById(`status_${itemId}`).textContent;
+    if (currentStatus === 'Cancelled' || currentStatus === 'Returned' || currentStatus === 'Delivered') {
+        alert('Status cannot be updated for Cancelled, Returned or Delivered Items.');
+        return;
+    }
+
+
+    fetch('/statusupdation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ itemId, newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            alert('Status updated successfully.');
+            document.getElementById(`status_${itemId}`).textContent = newStatus;
+        }
+    })
+    .catch(error => {
+        console.error('Error updating status:', error);
+        alert('Error updating status. Please try again.');
+    });
+}
+
+
+
+
+
+</script>
+
+<%- include ('../partials/adminfooter') %>

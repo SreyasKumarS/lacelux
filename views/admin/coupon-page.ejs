@@ -1,0 +1,109 @@
+<%- include ('../partials/adminheader') %>
+
+<section class="content-main">
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title">Coupon Management </h2>
+      </div>
+      <div class="d-grid">
+          <a href="/createcouponpage" class="btn btn-primary">Create New Coupons</a>
+      </div>
+  </div>
+  <div class="card mb-4">
+      </header>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th scope="col">Coupon</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Percentage</th>
+                          <th scope="col">Maximum Amount</th>
+                          <th scope="col">Expiry Date</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">List/Unlist</th>
+                      </tr>
+                     
+                  </thead>
+                  <tbody>
+                   <% coupons.forEach(coupon => { %>
+                    <tr>
+                      <td><%=coupon.coupon %></td>
+                      <td><%=coupon.description %></td>
+                      <td><%=coupon.percentage %></td>
+                      <td><%=coupon.maximumamount %></td>
+                      <td><%=coupon.expiryDate.toISOString().substring(0, 10) %></td>
+                      <td>
+                        <% if (coupon.isListed === true) { %>
+                          <span class="badge rounded-pill alert-success">Listed</span>
+                        <% }else{ %>
+                          <span class="badge rounded-pill alert-danger">UnListed</span>
+                          <% } %>
+                </td>
+                      <td>
+                <% if (coupon.isListed===true) { %>   
+                      <button type="button" class="btn btn-sm font-sm rounded " style="width: 70px; background-color: rgb(253, 26, 26);" onclick="listOrUnlistcoupon('<%= coupon._id %>','Unlist')">unList</button>
+                <% } else { %>
+                        <button type="button" class="btn btn-sm font-sm rounded " style="width: 70px; background-color: rgb(15, 193, 15);" onclick="listOrUnlistcoupon('<%= coupon._id %>','list')">List</button>
+                <% } %>
+                    </td>
+                    </tr> 
+                 <%});%>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+
+function listOrUnlistcoupon(couponId, clicked) {
+let confirmationMessage;
+if (clicked === 'Unlist') {
+    confirmationMessage = "Are you sure you want to unlist this coupon?";
+} else {
+    confirmationMessage = "Are you sure you want to list this coupon?";
+}
+
+swal({
+    text: confirmationMessage,
+    buttons: ["cancel", true],
+}).then((result) => {
+    if (result === true) {
+        $.ajax({
+            url: `/listOrUnlistcoupon?id=${couponId}`,
+            method: 'PATCH',
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    if (clicked === 'Unlist') {
+                        swal("Coupon Unlisted!", {
+                            icon: "success",
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        swal("Coupon Listed!", {
+                            icon: "success",
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                } else {
+                    console.error('Blocking/Unblocking failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Ajax error:', error);
+            }
+        });
+    }
+});
+}
+
+</script>
+
+<%- include ('../partials/adminfooter') %>

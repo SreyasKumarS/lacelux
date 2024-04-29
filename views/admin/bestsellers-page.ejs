@@ -1,0 +1,114 @@
+<%- include ('../partials/adminHeader') %>
+
+<section class="content-main">
+  <div class="content-header">
+      <h2 class="content-title">Best Selling Products</h2>
+    
+  </div> 
+  <div class="card mb-4">
+     <!-- card-header end// -->
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                          <th>Index</th>
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Sale Count</th>
+                          <th>Brand</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <% bestSellingProducts.forEach((product, index) => { %>
+                      <tr>
+                        <td><%= index + 1 %></td> 
+                          <td width="40%">
+                              <a href="#" class="itemside">
+                                  <div class="left">
+                                    <img src="/public/photos/<%= product.productDetails.productImage[0] %>" class="img-sm img-avatar" alt="Product Image">
+                                  </div>
+                                  <div class="info pl-3">
+                                      <h6 class="mb-0 title"><%= product.productDetails.productName %></h6>
+                                      <small class="text-muted">Product ID: <%= product.productId %></small>
+                                  </div>
+                              </a>
+                          </td>
+                          <td><%= product.productDetails.regularPrice %></td>
+                          <td><%= product.totalQuantity %></td>
+                          <td><%= product.productDetails.brand %></td>
+                          <td class="text-end">
+                          </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+              </table> <!-- table-responsive.// -->
+          </div>
+      </div> <!-- card-body end// -->
+  </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+<section class="content-main">
+  <div class="content-header">
+    <h2 class="content-title">Best Selling Category</h2>
+  </div> 
+  <div class="card mb-4" style="max-width: 800px;">
+    <div class="card-body" style="border: 2px solid #e6e6e6; border-radius: 5px; padding: 20px;">
+      <div class="table-responsive">
+        <table class="table table-hover" style="margin-bottom: 0;">
+          <thead>
+            <tr>
+              <th style="font-weight: bold;">Index</th>
+              <th style="font-weight: bold;">Category Name</th>
+              <th style="font-weight: bold;">Total Sale Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% bestSellingCategory.forEach((category, index) => { %>
+              <tr style="font-weight: bold;">
+                <td><%= index + 1 %></td> 
+                <td><%= category.categoryName %></td> 
+                <td><%= category.totalQuantity %></td> 
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div> 
+  </div> 
+</section>
+
+
+
+<section class="content-main">
+  <div class="content-header">
+    <h2 class="content-title">Best Selling Brands</h2>
+  </div> 
+  <div class="card mb-4" style="max-width: 800px;">
+    <div class="card-body" style="border: 2px solid #e6e6e6; border-radius: 5px; padding: 20px;">
+      <div class="table-responsive">
+        <table class="table table-hover" style="margin-bottom: 0;">
+          <thead>
+            <tr>
+              <th style="font-weight: bold;">Index</th>
+              <th style="font-weight: bold;">Brand</th>
+              <th style="font-weight: bold;">Total Sale Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% bestSellingBrands.forEach((brand, index) => { %>
+              <tr>
+                <td><%= index + 1 %></td>
+                <td><%= brand.brandName %></td>
+                <td><%= brand.totalQuantity %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> 
+</section>
+
+
+<%- include ('../partials/adminfooter') %>

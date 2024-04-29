@@ -1,0 +1,573 @@
+<%- include('../partials/userheader') %>
+<style>
+    .text-coconut-green {
+    color: #088178; /* Dark green color similar to coconut leaves */
+}
+
+</style>
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Checkout
+            </div>
+        </div>
+    </div>
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-sm-15">
+                    <div class="toggle_info">
+                        <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Create New Addess!</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click Here to create</a></span>
+                    </div>
+                    <div class="panel-collapse collapse login_form" id="loginform">
+                        
+                        <div class="card-body">
+                            <form method="post" action="/userprofilecreation?pointer=one" name="enq" onsubmit="return validateForm()">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Name <span class="required">*</span></label>
+                                        <input required="" class="form-control square" name="name" id="name" type="text">
+                                        <div id="name-error" class="error-message"></div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Mobile Number<span class="required">*</span></label>
+                                        <input required="" class="form-control square" name="mobile"  id="mobile">
+                                        <div id="mobile-error" class="error-message"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Pincode<span class="required">*</span></label>
+                                        <input required="" class="form-control square" name="pincode" type="text" id="pincode" >
+                                        <div id="pincode-error" class="error-message"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>House Name<span class="required">*</span></label>
+                                        <input required="" class="form-control square" name="houseName" id="houseName" type="text">
+                                        <div id="houseName-error" class="error-message"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Town/city<span class="required">*</span></label>
+                                        <input required="" class="form-control square" name="cityOrTown"  id="cityOrTown" type="text">
+                                        <div id="cityOrTown-error" class="error-message"></div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>District<span class="required">*</span></label>
+                                        <select required="" class="form-control square" name="district">
+                                            <option value="">Select District ▼</option>
+                                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                                            <option value="Kollam">Kollam</option>
+                                            <option value="Alappuzha">Alappuzha</option>
+                                            <option value="Pathanamthitta">Pathanamthitta</option>
+                                            <option value="Kottayam">Kottayam</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>State<span class="required">*</span></label>
+                                        <select required="" class="form-control square" name="state">
+                                            <option value="">Select State ▼</option>
+                                            <option value="Kerala">Kerala</option>
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Telangana">Telangana</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Country <span class="required">*</span></label>
+                                        <select required="" class="form-control square" name="country">
+                                            <option value="">Select Country ▼</option>
+                                            <option value="India">India</option>
+                                            <option value="India">USA</option>
+                                            <option value="India">London</option>
+                                            <option value="India">Canada</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                
+
+
+                <div class="col-lg-6">
+                    <div class="toggle_info">
+                        <span>
+                            <i class="fi-rs-label mr-10"></i>
+                            <span class="text-muted">Have a coupon?</span>
+                            <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a>
+                        </span>
+                    </div>
+                    <div class="panel-collapse collapse coupon_form" id="coupon">
+                        <div class="panel-body">
+                            <p class="mb-30 font-sm">Available Coupons:</p>
+                            <div class="row row-cols-1 row-cols-md-2 ">
+                                <% coupons.forEach(function(coupon) { %>
+                                    <% if(coupon.isListed) { %>
+                                    <div class="col mb-3">
+                                        <div class="card border border-success">
+                                            <div class="card-body bg-light-green">
+                                                <h5 class="card-title text-coconut-green"><strong>Coupon: <%= coupon.coupon %></strong></h5>
+                                                <p class="card-text"><%= coupon.description %></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                <% }); %>
+                            </div>
+                            <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                            <form method="post" id="applyCouponForm">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Coupon Code..." id="couponCodeInput" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success btn-md" id="applyCouponButton">Apply Coupon</button>
+                                </div>
+                            </form>
+                            <div id="couponDetails">
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="divider mt-50 mb-50"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-25">
+                        <h4>Billing Details</h4>
+                    </div>
+                    <div>
+                        <div class="col-md-6">
+                            <div class="mb-25">
+                                <h4>Delivery Address</h4>
+                            </div>
+
+                            <form action="/placeorder" method="post"  id="orderForm" >
+
+                                <% data.address.forEach(function(data,index) { %>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><%= data.name %></h5>
+                                            <p class="card-text"><%= data.houseName %></p>
+                                            <p class="card-text"> <%= data.pincode %>, <%= data.cityOrTown %><br> <%= data.district %>, <%= data.state %><br><%= data.country %> <br><%= data.mobile %> </p>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="addressIndex" id="address<%= index %>" value="<%= index %>" checked="">
+                                                <label class="form-check-label" for="address<%= index %>">Select</label>
+                                            </div>
+                                            <a href="/editaddresspage?id=<%= data._id %>&flag=one"  class="btn-small text-blue">Edit</a>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Your Orders</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% product.forEach((row)=>{ %>
+                                        <% row.items.forEach((data, index) => { %>
+                                    <tr>
+                                        <td class="image product-thumbnail"><img src="/public/photos/<%= data.product.productImage[0] %>"  alt="#"></td>
+                                        <td>
+                                            <h5><a href="shop-product-full.html"><%=data.product.productName %></a></h5> <span class="product-qty">x <%=data.quantity %></span>
+                                        </td>
+                                        <td><%= (data.price * data.quantity).toFixed(2) %></td>
+                                    </tr>
+                                    <% }); %>
+                                    <% }); %>
+                                    <tr id="subtotalRow">
+                                        <th>SubTotal</th>
+                                        <td class="product-subtotal" colspan="2">₹<%= product[0].totalPrice %></td>
+                                    </tr>
+                                    <tr id="discountRow">
+                                        <input type="hidden" name="couponDis" class="couponDis" value="0">
+                                        <th>Discount</th>
+                                        <td colspan="2"><em class="discountText">₹0</em></td>
+                                    </tr>
+                                    
+                                    
+                                    <tr>
+                                        <th>Shipping</th>
+                                        <td colspan="2"><em>Free Shipping</em></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Total</th>
+                                        <td colspan="2" class="product-total"><span class="font-xl text-brand fw-900">₹<%= product[0].totalPrice %></span></td>
+                                    </tr>
+      
+                                </tbody>
+                                <div id="savedAmount" class="saved-amount" style="font-size: 18px; color: #088178;"></div>
+
+                            </table>
+                        </div>
+                       <button type="button" class="btn btn-danger btn-md" id="removeCouponButton">Remove Coupon</button>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        <div class="payment_method">
+                            <div class="mb-25">
+                                <h5>Payment</h5>
+                            </div>
+                            <div class="payment_option">
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" type="radio" name="payment_option" id="wallet" value="Wallet" checked>
+                                        <label class="form-check-label" for="wallet">Wallet</label>
+                                    </div>
+
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" type="radio" name="payment_option" id="cashOnDelivery" value="Cash on Delivery" 
+                                        <% if (product[0].totalPrice > 1000) { %> disabled <% } %>>
+                                        <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
+                                    </div>
+                                    
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" type="radio" name="payment_option" id="razorPay" value="RazorPay">
+                                        <label class="form-check-label" for="razorPay">RazorPay</label>
+                                        <input type="hidden" id="hiddenInput" name="RazPayFail" value="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="placeordertotalPrice" name="placeordertotalPrice" value="<%= product[0].totalPrice %>">
+                        <button type="submit" class="btn btn-fill-out btn-block mt-30">Place Order</button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+//---------------coupon adding and removing--------------------------------------------------------------------------------
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const applyCouponButton = document.getElementById('applyCouponButton');
+    const removeCouponButton = document.getElementById('removeCouponButton');
+
+    applyCouponButton.addEventListener('click', applyCoupon);
+
+    function applyCoupon(event) {
+        event.preventDefault();
+        const couponCodeInput = document.getElementById('couponCodeInput');
+        const couponCode = couponCodeInput.value.trim();
+
+        if (couponCode === '') {
+        Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please enter a coupon code.',
+        showConfirmButton: false, // Hide the "OK" button
+        timer: 3000 // Auto-close the alert after 3 seconds
+        });
+        return;
+        }
+
+        fetch(`/couponapply?couponCode=${encodeURIComponent(couponCode)}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                Swal.fire({
+                icon: 'success',
+                title: 'Coupon Applied',
+                text: 'Coupon applied successfully!',
+                showConfirmButton: false, // Hide the "OK" button
+                timer: 3000 // Auto-close the alert after 3 seconds
+            });
+             updateCouponDetails(data);
+            }
+        })
+        .catch(error => console.error('Error applying coupon:', error));
+    }
+
+    function updateCouponDetails(couponData) {
+        const discountAmount = couponData.discountAmount;
+        const newTotalAmount = couponData.totalAmount;
+        const savedAmount = couponData.totalAmount - (couponData.totalAmount - discountAmount);
+
+        const discountInput = document.querySelector('.couponDis');
+        discountInput.value = discountAmount;
+        const discountText = document.querySelector('.discountText');
+        discountText.textContent = `₹${discountAmount}`;
+
+        const productSubtotalElement = document.querySelector('.product-total');
+        productSubtotalElement.innerHTML = `<span class="font-xl text-brand fw-900">₹${newTotalAmount}</span>`;
+
+        const savedAmountDiv = document.getElementById('savedAmount');
+        savedAmountDiv.innerText = `You saved ₹${savedAmount} using this coupon!`;
+
+        const coupontotalPrice = document.getElementById('placeordertotalPrice');
+        coupontotalPrice.value = newTotalAmount;
+
+       
+        if (discountAmount > 0) {
+            removeCouponButton.style.display = 'inline-block'; 
+            applyCouponButton.style.display = 'none'; 
+        } else {
+            removeCouponButton.style.display = 'none'; 
+            applyCouponButton.style.display = 'inline-block'; 
+        }
+    }
+
+    removeCouponButton.style.display = 'none';
+
+    removeCouponButton.addEventListener('click', function () {
+        window.location.reload();
+    });
+});
+
+
+
+
+
+
+//address validation---------------------------------------------------------------------------
+
+function validateForm() {
+    let isValid = true;
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const pincode = document.getElementById("pincode").value.trim();
+    const houseName = document.getElementById("houseName").value.trim();
+    const cityOrTown = document.getElementById("cityOrTown").value.trim();
+
+    // Validation for Name
+    if (name === "") {
+        displayErrorMessage("name-error", "Name is required.");
+        isValid = false;
+    } else if (!isNameValid(name)) {
+        displayErrorMessage("name-error", "Name should only contain alphabets.");
+        isValid = false;
+    }
+
+    // Validation for Mobile Number
+    if (mobile === "") {
+        displayErrorMessage("mobile-error", "Mobile Number is required.");
+        isValid = false;
+    } else if (!/^\d{10}$/.test(mobile)) {
+        displayErrorMessage("mobile-error", "Mobile Number should be 10 digits.");
+        isValid = false;
+    }
+
+    // Validation for Pincode
+    if (pincode === "") {
+        displayErrorMessage("pincode-error", "Pincode is required.");
+        isValid = false;
+    } else if (!/^\d{6}$/.test(pincode)) {
+        displayErrorMessage("pincode-error", "Pincode should be 6 digits.");
+        isValid = false;
+    }
+
+    // Validation for House Name
+    if (houseName === "") {
+        displayErrorMessage("houseName-error", "House Name is required.");
+        isValid = false;
+    }
+
+    // Validation for City or Town
+    if (cityOrTown === "") {
+        displayErrorMessage("cityOrTown-error", "Town/City is required.");
+        isValid = false;
+    } else if (containsNumbers(cityOrTown)) {
+        displayErrorMessage("cityOrTown-error", "Town/City should not contain numbers.");
+        isValid = false;
+    }
+    return isValid;
+}
+
+
+function isNameValid(name) {
+    return /^[A-Za-z]+$/.test(name);
+}
+
+function containsNumbers(input) {
+    return /\d/.test(input);
+}
+
+
+function displayErrorMessage(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.innerText = message;
+    errorElement.style.color = "red";
+}
+//razor----------------------------------------------------------------------
+
+// document.getElementById('orderForm').addEventListener('submit', async (e) => {
+//     e.preventDefault();
+
+//     const formData = new FormData(e.target);
+//     const paymentOption = formData.get('payment_option');
+
+//     if (paymentOption === 'RazorPay') { // Ensure correct spelling and case for Razorpay option
+
+//         // Perform operations specific to Razorpay payment method
+//         const totalPriceTd = document.querySelector(".product-subtotal");
+//         const totalPriceText = totalPriceTd.textContent.trim().replace('₹', '');
+//         const totalPrice = parseFloat(totalPriceText);
+
+//         var options = {
+//             key: 'rzp_test_ouYvdm0lXOR287',
+//             amount: totalPrice * 100, // Make sure amount is in the smallest currency unit
+//             currency: "INR",
+//             name: "Lacelux",
+//             description: "Purchase Description",
+//             image: "https://example.com/logo.png",
+
+//             handler: function (response) {
+//                 console.log(response);
+//                 console.log("Payment successful");
+
+//                 // Submit the form after a successful payment
+//                 e.target.submit();
+//             },
+
+//             prefill: {
+//                 name: "<%= data.name %>",
+//                 email: "<%= data.email %>",
+//                 contact: "<%= data.mobile %>",
+//             },
+//             theme: {
+//                 color: "#3399cc",
+//             },
+//         };
+
+//         var rzp = new Razorpay(options);
+//         rzp.open();
+
+//     } else {
+//         // For other payment methods, simply submit the form
+//         e.target.submit();
+//     }
+// });
+
+
+//----------------------------razorpay & wallet--------------------------------------------------------------------
+
+const balance = '<%= wallet && wallet.balance ? wallet.balance : 0 %>;'
+
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+
+    var selectedAddress = document.querySelector('input[name="addressIndex"]:checked');
+    if (!selectedAddress) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please Add an address.',
+        });
+        return;
+    }
+
+    const formData = new FormData(e.target);
+    const paymentOption = formData.get('payment_option');
+
+    if (paymentOption === 'RazorPay' || paymentOption === 'Wallet' ) { 
+         if (paymentOption === 'Wallet'){
+
+        const totalPriceTd = document.querySelector(".product-total");
+        const totalPriceText = totalPriceTd.textContent.trim().replace('₹', '');
+        const totalPrice = parseFloat(totalPriceText);
+        const walletBalance = parseFloat(balance); 
+
+        if(walletBalance>=totalPrice){
+
+            e.target.submit();
+        }else{
+       Swal.fire({
+        icon: 'error',
+        title: 'Insufficient Balance',
+        text: 'Insufficient balance in your wallet. Please choose a different payment method or recharge your wallet.',
+        showConfirmButton: false, // Hide the "OK" button
+        timer: 3000 // Auto-close the alert after 3 seconds
+        });
+        return; 
+        }}
+    
+        const totalPriceTd = document.querySelector(".product-total");
+        const totalPriceText = totalPriceTd.textContent.trim().replace('₹', '');
+        const totalPrice = parseFloat(totalPriceText);
+
+        var options = {
+            key: 'rzp_test_ouYvdm0lXOR287',
+            amount: totalPrice * 100,
+            currency: "INR",
+            name: "Lacelux",
+            description: "Purchase Description",
+            image: "https://example.com/logo.png",
+
+            handler: function (response) {
+                console.log(response);
+                console.log("Payment successful");
+
+                
+                e.target.submit();
+            },
+
+            prefill: {
+                name: "<%= data.name %>",
+                email: "<%= data.email %>",
+                contact: "<%= data.mobile %>",
+            },
+            theme: {
+                color: "#3399cc",
+            },
+
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+
+//-----------------------------------------------------------        
+
+   rzp.on("payment.failed", function (response){
+    console.log("Payment failed")
+
+    document.querySelector("#hiddenInput").value = "Failed";
+    // Submit the form
+    e.target.submit();
+})
+    }
+     else {
+        e.target.submit();
+    }
+});
+
+
+
+</script>
+<%- include('../partials/userfooter') %>

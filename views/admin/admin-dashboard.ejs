@@ -1,0 +1,594 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="/public/admin/assets/imgs/theme/favicon.svg">
+    <link href="/public/admin/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <div class="logo logo-width-1">
+                <a href="index.html" style="font-family: Arial, sans-serif; font-size: 35px; color: #333; text-decoration: none; font-weight: bold;">Lacelux</a>
+            </div>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active">
+                    <a class="menu-link" href="/admindashboard"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/productlist"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item    ">
+                    <a class="menu-link" href="/categorylist"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">category</span>
+                    </a>
+                </li>
+
+                <li class="menu-item    ">
+                    <a class="menu-link" href="/customermanagement"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">customer</span>
+                    </a>
+                </li>
+                <li class="menu-item    ">
+                    <a class="menu-link" href="/ordermanagement"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Order Management</span>
+                    </a>
+                </li>
+                <li class="menu-item    ">
+                    <a class="menu-link" href="/couponmanagement"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Coupon Management</span>
+                    </a>
+                </li>
+                <li class="menu-item    ">
+                    <a class="menu-link" href="/bestsellers"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Best selling Product</span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguag3q1e">
+                            <a class="dropdown-item text-brand" href="#"><img src="/public/admin/assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/public/admin/assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/public/admin/assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/public/admin/assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/public/admin/assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Lacelux Dashboard </h2>
+                    <p>Whole data about your business here</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Total Sales Value</h6>
+                                <span>₹<%= totalRevenue %></span>
+                                <span class="text-sm">
+                                    Shipping fees are not included
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Orders</h6> <span><%=  totalOrders %></span>
+                                <span class="text-sm">
+                                    Excluding orders in transit
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Products</h6> <span><%= totalProducts %></span>
+                                <span class="text-sm">
+                                    In 3 Categories
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Customers</h6> <span><%= numberOfUsers %></span>
+                                <span class="text-sm">
+                                    Based in your local time.
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-8 col-lg-12">
+                  <div class="card mb-4">
+                    <article class="card-body">
+                      <h5 class="card-title">Monthly Sales Statistics</h5>
+                      <canvas id="monthlyChart" height="120px"></canvas>
+                    </article>
+                  </div>
+                </div>
+                <div class="col-xl-4 col-lg-12">
+                  <div class="card mb-4">
+                    <article class="card-body">
+                      <h5 class="card-title">Order Statuses</h5>
+                      <input type="hidden" id="orderStatus">
+                      <canvas id="myChart2" height="217"></canvas>
+                    </article>
+                  </div>
+                </div>
+                <div class="col-xl-8 col-lg-12">
+                  <div class="card mb-4">
+                    <article class="card-body">
+                      <h5 class="card-title">Daily Sales Statistics</h5>
+                      <canvas id="dailyChart" height="120px"></canvas>
+                    </article>
+                  </div>
+                </div>
+
+             <div class="card mb-4">
+                    <header class="card-header">
+                        <h4 class="card-title">LaceLux Sales Report</h4>
+                        <div class="row align-items-center">
+                            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                <div class="custom_select">
+                                    <select id="reportInterval" class="form-select select-nice">
+                                        <option value="daily">Daily</option>
+                                        <option value="monthly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                        <option value="custom">Custom</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <button id="generate_report_btn" class="btn btn-primary">Generate Report</button>
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <label for="start_date" style="color: #000; font-weight: bold;font-size: 16px;">Start Date</label>
+                                <input type="date" id="start_date" name="start_date" value="2021-05-02" class="form-control" max="<%= currentDate %>">
+                            </div>
+                            <div class="col-md-2 col-6">
+                                <label for="end_date" style="color: #000; font-weight: bold; font-size: 16px;">End Date</label>
+                                <input type="date" id="end_date" name="end_date" value="2021-05-02" class="form-control" max="<%= currentDate %>">
+                            </div>
+                              
+                                <div id="reportContainer" >
+                                    
+                                    <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="align-middle" scope="col">Index</th>
+                                                <th class="align-middle" scope="col">Order ID</th>
+                                                <th class="align-middle" scope="col">Customer Name</th>
+                                                <th class="align-middle" scope="col">Date</th>
+                                                <th class="align-middle" scope="col">Product Name</th>
+                                                <th class="align-middle" scope="col">Total</th>
+                                                <th class="align-middle" scope="col">Coupon Deduction</th>
+                                                <th class="align-middle" scope="col">Payment Method</th>
+                                                <th class="align-middle" scope="col">Payment Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reportTableBody">
+                                     <!-- Table body content will be populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div> 
+                            </div>
+                            <button id="downloadButton" class="btn btn-primary" style="display: none;">Download PDF</button>
+                            <button id="downloadExcelButton" class="btn btn-primary" style="display: none;">Download Excel</button>
+                        </div>  
+                      </header>
+                    </div>
+                </div>
+             </div>
+        </section>
+</body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+//---------------monthlycharts------------------------------------------------------------------
+
+
+window.onload = function () {
+  fetch('/showcart', {
+    method: 'post',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ msg: "hi" })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Data received from server:", data); 
+      if (data.monthlySalesData && data.dailySalesData && data.eachOrderStatusCount) {
+        console.log("Monthly Sales Data:", data.monthlySalesData);
+        console.log("Daily Sales Data:", data.dailySalesData);
+        console.log("Order Statuses Data:", data.eachOrderStatusCount);
+
+        
+        chart(data.monthlySalesData, data.dailySalesData);
+
+       
+        pieChart(data.eachOrderStatusCount);
+      } else {
+        console.error("Incomplete data received from server.");
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+function chart(monthlySalesData, dailySalesData) {
+  // Fill in missing months with zero values
+  const allMonths = Array.from({ length: 12 }, (_, i) => i + 1); // Array representing all months (1 to 12)
+  const monthlyDataMap = new Map(monthlySalesData.map(item => [item._id.month, item.totalAmount]));
+  const monthlyDataFilled = allMonths.map(month => ({
+    month,
+    totalAmount: monthlyDataMap.get(month) || 0
+  }));
+
+  // Monthly sales chart
+if ($('#monthlyChart').length) {
+var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+var monthlyChart = new Chart(monthlyCtx, {
+    type: 'line',
+    data: {
+    labels: monthlyDataFilled.map(item => getMonthName(item.month)), // Use month names as labels
+    datasets: [{
+        label: 'Monthly Sales',
+        backgroundColor: 'rgba(44, 120, 220, 0.2)',
+        borderColor: 'rgba(44, 120, 220)',
+        data: monthlyDataFilled.map(item => item.totalAmount)
+    }]
+    },
+    options: {
+    plugins: {
+        legend: {
+        labels: {
+            usePointStyle: true
+        }
+        }
+    }
+    }
+});
+}
+
+// Function to get month name from month number
+function getMonthName(month) {
+  const months = [
+    'January', 'February', 'March', 'April',
+    'May', 'June', 'July', 'August',
+    'September', 'October', 'November', 'December'
+  ];
+  return months[month - 1]; // Adjust index to match month number
+}
+
+
+
+
+    // Daily sales chart
+if ($('#dailyChart').length) {
+var dailyCtx = document.getElementById('dailyChart').getContext('2d');
+var dailyChart = new Chart(dailyCtx, {
+    type: 'line',
+    data: {
+    labels: dailySalesData.map(item => {
+        // Correcting how the date is created by using item._id.day
+        const date = new Date(2024, 3, item._id.day); // April 2024, day comes from _id object
+        return date.toLocaleDateString('en-US', {
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit'
+        });
+    }),
+    datasets: [{
+        label: 'Daily Sales',
+        backgroundColor: 'rgba(44, 120, 220, 0.2)',
+        borderColor: 'rgba(44, 120, 220)',
+        data: dailySalesData.map(item => item.totalAmount)
+    }]
+    },
+    options: {
+    scales: {
+        x: {
+        title: {
+            display: true,
+            text: 'Date'
+        }
+        },
+        y: {
+        beginAtZero: true,
+        title: {
+            display: true,
+            text: 'Sales Amount (₹)'
+        }
+        }
+    },
+    plugins: {
+        legend: {
+        labels: {
+            usePointStyle: true,
+        },
+        }
+    },
+    }
+});
+}}
+
+
+
+function pieChart(eachOrderStatusCount) {
+if ($('#myChart2').length) {
+var statusLabels = Object.keys(eachOrderStatusCount);
+var statusData = Object.values(eachOrderStatusCount);
+
+var ctx = document.getElementById('myChart2').getContext('2d');
+var myChart2 = new Chart(ctx, {
+    type: 'pie',
+    data: {
+    labels: statusLabels,
+    datasets: [{
+        data: statusData,
+        backgroundColor: [
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(75, 192, 192, 0.7)',
+        'rgba(153, 102, 255, 0.7)',
+        'rgba(255, 159, 64, 0.7)'
+        ],
+        borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+    }]
+    },
+    options: {
+    plugins: {
+        legend: {
+        display: true,
+        position: 'right'
+        }
+    }
+    }
+});
+}
+}
+
+
+//------------------sales report---------------------------------------------------------------------
+
+let response = null;
+
+$(document).ready(function () {
+    // Function to get the start date based on the selected interval
+    function getStartDate(selectedInterval) {
+        const currentDate = new Date();
+        let startDate;
+        switch (selectedInterval) {
+            case 'daily':
+                startDate = currentDate.toISOString().split('T')[0]; // Today's date
+                break;
+            case 'monthly':
+                startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toISOString().split('T')[0]; // First day of the current month
+                break;
+            case 'yearly':
+                startDate = new Date(currentDate.getFullYear(), 0, 1).toISOString().split('T')[0]; // First day of the current year
+                break;
+            default:
+                startDate = currentDate.toISOString().split('T')[0]; // Default to today's date
+                break;
+        }
+        return startDate;
+    }
+
+    function updateDateInputs(startDate, endDate) {
+        $('#start_date').val(startDate);
+        $('#end_date').val(endDate);
+    }
+
+    const initialSelectedInterval = $('.select-nice').val();
+    const initialStartDate = getStartDate(initialSelectedInterval);
+    const initialEndDate = new Date().toISOString().split('T')[0];
+    updateDateInputs(initialStartDate, initialEndDate);
+
+    $('#generate_report_btn').click(function () {
+        const selectedInterval = $('.select-nice').val();
+        let startDate, endDate;
+
+        if (selectedInterval === 'custom') {
+            startDate = $('#start_date').val();
+            endDate = $('#end_date').val();
+        } else {
+            startDate = getStartDate(selectedInterval);
+            endDate = new Date().toISOString().split('T')[0];
+        }
+
+        updateDateInputs(startDate, endDate);
+
+    
+        if (startDate && endDate) {
+            $.ajax({
+                url: '/generatesalesreport',
+                type: 'POST',
+                data: {
+                    interval: selectedInterval,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+            success: function (response) {
+            
+                console.log(response);
+                $('#reportTableBody').empty();
+                        response.reportData.forEach((order, index) => {
+                            let productsHTML = '';
+                            order.products.forEach(product => {
+                                console.log('Product:', product); 
+                                const productName = product || 'Product Name Not Available'; 
+                                productsHTML += `<li>${productName}</li>`; 
+                            });
+                            let row = `<tr>
+                                <td>${index + 1}</td>
+                                <td>#${order.orderId.toString().substring(order.orderId.toString().length-5)}</td>
+                                <td>${order.firstName}</td>
+                                <td>${new Date(order.date).toLocaleDateString()}</td>
+                                <td><ul>${productsHTML}</ul></td> // Display product names as a list
+                                <td>Rs.${order.totalPrice ? order.totalPrice.toFixed(2) : ''}</td>
+                                <td>${order.couponDiscount.toFixed(2) }</td>
+                                <td><span class="badge badge-pill badge-soft-success">${order.paymentMethod}</span></td>
+                                <td>${order.paymentStatus}</td>
+                            </tr>`;
+                            $('#reportTableBody').append(row);
+                        });
+                    // $('#reportContainer').show();
+                    $('#downloadButton').show();
+                    $('#downloadExcelButton').show();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            alert('Please select both start and end dates for the custom date range.');
+        }
+    });
+
+    $('#downloadButton').click(function () {
+        downloadPdf();
+    });
+
+    $('#downloadExcelButton').click(function () {
+        downloadExcel();
+    });
+    
+    function downloadPdf() {
+            html2canvas(document.getElementById("reportContainer")).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF({
+                    orientation: "landscape",
+                    unit: "pt",
+                    format: [canvas.width, canvas.height]
+                });
+                const imgHeight = (canvas.width / pdf.internal.pageSize.getWidth()) * pdf.internal.pageSize.getHeight();
+                pdf.addImage(imgData, 'PNG', (pdf.internal.pageSize.getWidth() - canvas.width) / 2, 10, canvas.width, imgHeight);
+                pdf.save("report.pdf");
+            });
+        }
+
+        function downloadExcel() {
+            const element = document.getElementById('reportTableBody');
+            const wb = XLSX.utils.table_to_book(element);
+            XLSX.writeFile(wb, 'report.xlsx');
+        }
+});
+
+
+</script>
+
+

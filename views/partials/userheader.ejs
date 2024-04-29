@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:20:36 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/user/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/public/user/assets/css/main.css">
+   
+    
+</head>
+
+<body>
+<!-- Quick view -->      
+  <header class="header-area header-style-1 header-height-2">
+        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="header-wrap">
+                    <div class="logo logo-width-1">
+                        <a href="index.html" style="font-family: Arial, sans-serif; font-size: 40px; color: #333; text-decoration: none; font-weight: bold;">Lacelux</a>
+                    </div>
+                    <div class="header-right">
+                        <div class="search-style-2">
+                            <form action="/usershop">
+                                <input type="text" placeholder="Search for items... " name="q">
+                            </form>
+                        </div>
+                        <div class="header-action-right">
+                            <div class="header-action-2">
+                                <div class="header-action-icon-2">
+                                    <a href="/wishlist">
+                                        <img class="svgInject" alt="Evara" src="/public/user/assets/imgs/theme/icons/icon-heart.svg">
+                                        <span class="pro-count blue">4</span>
+                                    </a>
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a class="mini-cart-icon" href="/cartpage">
+                                        <img alt="Evara" src="/public/user/assets/imgs/theme/icons/icon-cart.svg">
+                                        <span class="pro-count blue">2</span>
+                                    </a>
+                                    </div>
+                                    <% if (user) { %>
+                                        <div class="header-action-icon-2">
+                                            <a href="/profilepage">
+                                                <i class="fas fa-user-circle"></i>                               
+                                            </a><span class="strong"><%= user.name %></span> 
+                                        </div>
+                                        <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4">
+                          <div class="header-info header-info-right">
+                            <ul>
+                                <% if (user) { %>
+                                  <li><i class="fi-rs-user"></i><a href="/userlogout">Log out</a></li>
+                                <% } else { %>
+                                  <li><i class="fi-rs-user"></i><a href="/userlogin">Log In</a></li>
+                                  <li><i class="fi-rs-user"></i><a href="/userregister">Sign Up</a></li>
+                                <% } %>
+                              </ul>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom header-bottom-bg-color sticky-bar">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <div class="logo logo-width-1 d-block d-lg-none">
+                        <a href="index.html"><img src="/public/user/assets/imgs/theme/logo.svg" alt="logo"></a>
+                    </div>
+                    <div class="header-nav d-none d-lg-flex">
+                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
+                            <nav>
+                                <ul>
+                                    <li><a class="active" href="/">Home </a>                                     
+                                    </li>
+                                    <li>
+                                        <a href="page-about.html">About</a>
+                                    </li>
+                                    <li>
+                                        <a href="/usershop">Shop</a>
+                                    </li>
+                                    <li>
+                                        <a href="/wallet">Wallet</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                    <div class="header-action-right d-block d-lg-none">
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="shop-wishlist.html">
+                                    <img alt="Evara" src="/public/user/assets/imgs/theme/icons/icon-heart.svg">
+                                    <span class="pro-count white">4</span>
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="/cartpage">
+                                    <img alt="Evara" src="/public/user/assets/imgs/theme/icons/icon-cart.svg">
+                                    <span class="pro-count white">2</span>
+                                </a>
+                                
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                    <ul>
+                                        <li>
+                                            <div class="shopping-cart-img">
+                                                <a href="shop-product-right.html"><img alt="Evara" src="/public/user/assets/imgs/shop/thumbnail-3.jpg"></a>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
+                                                <h3><span>1 × </span>$800.00</h3>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="shopping-cart-img">
+                                                <a href="shop-product-right.html"><img alt="Evara" src="/public/user/assets/imgs/shop/thumbnail-4.jpg"></a>
+                                            </div>
+                                            <div class="shopping-cart-title">
+                                                <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
+                                                <h3><span>1 × </span>$3500.00</h3>
+                                            </div>
+                                            <div class="shopping-cart-delete">
+                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="shopping-cart-footer">
+                                        <div class="shopping-cart-total">
+                                            <h4>Total <span>$383.00</span></h4>
+                                        </div>
+                                        <div class="shopping-cart-button">
+                                            <a href="shop-cart.html">View cart</a>
+                                            <a href="shop-checkout.html">Checkout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="header-action-icon-2 d-block d-lg-none">
+                                <div class="burger-icon burger-icon-white">
+                                    <span class="burger-icon-top"></span>
+                                    <span class="burger-icon-mid"></span>
+                                    <span class="burger-icon-bottom"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
