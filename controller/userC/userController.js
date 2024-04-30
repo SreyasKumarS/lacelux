@@ -1159,16 +1159,16 @@ const generateInvoicefunction = async function (req, res) {
   try {
     const orderId = req.query.orderId; 
     const userId = req.query.userId;
-
+    console.log("okkk vanu")
     if (!orderId || !userId) {
       return res.status(400).send('Invalid request parameters');
     }
 
    
     const order = await orderModel.findOne({ _id: orderId, userID: userId }).populate('items.product');
-
+  
     if (!order) {
-      
+      console.log("order illa")
       return res.status(404).send('Order not found');
     }
     const htmlContent = `
@@ -1303,6 +1303,7 @@ const generateInvoicefunction = async function (req, res) {
     const pdfBuffer = await page.pdf({ format: 'A4' }); 
   
     await browser.close();
+    console.log("all set")
     
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="invoice.pdf"`);
