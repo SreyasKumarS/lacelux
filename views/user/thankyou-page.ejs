@@ -122,10 +122,10 @@
       doc.text('Total Order Price: ' + order.totalPrice, 10, yPos);
       yPos += 10;
 
-      doc.text('Discount: ₹' + order.couponDiscount, 10, yPos);
+      doc.text('Discount: ' + order.couponDiscount, 10, yPos);
       yPos += 10;
 
-      doc.text('Tax IGST: ₹' + (order.totalPrice * 0.08).toFixed(2) + ' included', 10, yPos);
+      doc.text('Tax IGST: ' + (order.totalPrice * 0.08).toFixed(2) + ' included', 10, yPos);
 
       yPos += 10;
 
