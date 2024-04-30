@@ -67,11 +67,89 @@
     <a href="/" class="btn">Back to Home</a>
   
     <!-- Add a button for downloading the invoice -->
-    <a href="/generateInvoice?orderId=<%= orderId %>&userId=<%= userId %>" class="btn">Download Invoice</a>
+    <!-- <a href="/generateInvoice?orderId=<%= orderId %>&userId=<%= userId %>" class="btn">Download Invoice</a> -->
+
+    <button id="downloadInvoiceBtn" class="btn " data-order=<%- encodeURIComponent(JSON.stringify(order)) %> >Download Invoice</button>
 
     <% } %>
 
   </div>
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+
+
+  document.addEventListener('DOMContentLoaded', function() {    
+    document.getElementById('downloadInvoiceBtn').addEventListener('click', function() {
+
+    const order = JSON.parse(decodeURIComponent(this.getAttribute('data-order')));
+    console.log("order is:",order);
+
+    const doc = new jspdf.jsPDF();
+      let yPos = 20;
+
+      // Title
+      doc.setFontSize(18);
+      doc.text('Invoice', 105, yPos, null, null, 'center');
+      yPos += 10;
+
+      // Order details
+      doc.setFontSize(12);
+      doc.text('Order ID: ' + order._id, 10, yPos);
+      yPos += 10;
+
+      doc.text('Date: ' + new Date().toLocaleDateString(), 10, yPos);
+      yPos += 10;
+
+      
+      // Products table
+      const bodyData = order.items.map(item => [item.product.productName, item.quantity, item.price, item.price * item.quantity]);
+      
+      doc.autoTable({
+        startY: yPos,
+        head: [['Product', 'Quantity', 'Price per unit', 'SubTotal Price']],
+        body: bodyData,
+        theme: 'grid',
+        styles: { halign: 'center' },
+      });
+
+      yPos = doc.previousAutoTable.finalY + 10;
+
+      // Total price and discount
+      doc.text('Total Order Price: ' + order.totalPrice, 10, yPos);
+      yPos += 10;
+
+      doc.text('Discount: ₹' + order.couponDiscount, 10, yPos);
+      yPos += 10;
+
+      doc.text('Tax IGST: ₹' + (order.totalPrice * 0.08).toFixed(2) + ' included', 10, yPos);
+
+      yPos += 10;
+
+      // Shipping address
+      doc.text('Shipping Address:', 10, yPos);
+      yPos += 10;
+      doc.text(order.billingDetails.name, 10, yPos);
+      yPos += 5;
+      doc.text(order.billingDetails.houseName, 10, yPos);
+      yPos += 5;
+      doc.text(order.billingDetails.district + ', ' + order.billingDetails.state + '-' + order.billingDetails.pincode, 10, yPos);
+      yPos += 5;
+      doc.text(order.billingDetails.country, 10, yPos);
+      yPos += 10;
+
+      // Payment details
+      doc.text('Payment Method: ' + order.paymentMethod, 10, yPos);
+      yPos += 10;
+
+      doc.text('Payment Status: ' + order.paymentStatus, 10, yPos);
+
+      doc.save('invoice.pdf');
+    });
+});
+
+</script>
 </html>

@@ -647,7 +647,7 @@ const placeorderfunction = async function (req, res) {
     
         await transaction.save();
       }
-     const order = await orderModel.findById(newOrder._id)
+     const order = await orderModel.findById(newOrder._id).populate('items.product').exec()
      console.log(order,'failureeeeeeeeeeeeeeeee');
 
       res.render('user/thankyou-page', {
@@ -1159,7 +1159,6 @@ const generateInvoicefunction = async function (req, res) {
   try {
     const orderId = req.query.orderId; 
     const userId = req.query.userId;
-    console.log("okkk vanu")
     if (!orderId || !userId) {
       return res.status(400).send('Invalid request parameters');
     }

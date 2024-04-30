@@ -231,12 +231,14 @@ const loadretrythankyoupage= async function(req,res){
     
     // Now you can use orderId, userId, user, and order as needed
     console.log('Order ID:', orderId);
-    const order = await orderModel.findById(orderId)
+
+    const Order =  await orderModel.findById(orderId).populate('items.product').exec()
+    console.log("order here:" ,Order);
   
     res.render('user/thankyou-page', {
       orderId: orderId,
       userId:req.session.user._id,
-      order:order
+      order:Order
     });
 
   }catch (error) {
