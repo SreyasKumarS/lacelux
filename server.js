@@ -31,7 +31,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.use(methodOverride("_method"));
-console.log("server start")
+
 //setup session
 
 app.use(session({
