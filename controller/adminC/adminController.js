@@ -104,13 +104,17 @@ const admin=req.session.admin
         totalProducts += order.items.reduce((acc, item) => acc + item.quantity, 0);
         
       });
+
+      let currentDate = new Date().toISOString().split('T')[0];
+
       res.render('admin/admin-dashboard', {
         orders: orders,
         admin: req.session.admin,
         totalRevenue: totalRevenue,
         totalOrders: totalOrders,
         totalProducts: totalProducts,
-        numberOfUsers: numberOfUsers
+        numberOfUsers: numberOfUsers,
+        currentDate
       });
     } else {
       req.flash("errorMessage", "Admin not found");
