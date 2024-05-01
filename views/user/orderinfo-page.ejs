@@ -171,6 +171,22 @@
 <script>
 function cancelProduct(orderId, productId) {
 
+
+    Swal.fire({
+    title: 'Cancel Order',
+    text: 'Are you sure you want to cancel this order?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, cancel it!',
+    cancelButtonText: 'No, keep it'
+}).then((result) => {
+    if (result.isConfirmed) {
+      // User confirmed the cancellation
+
+
+
     fetch('/cancelorder', {
         method: 'POST',
         headers: {
@@ -213,7 +229,17 @@ function cancelProduct(orderId, productId) {
         showConfirmButton: false,
         timer: 3000});});
 
+
+
+    } else {
+      // User clicked "No" in the confirmation dialog
+      // Do nothing, button remains unchanged
+    }
+  });
+
+
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const disabledBtns = document.querySelectorAll('[id^="cancelBtn-"]');
