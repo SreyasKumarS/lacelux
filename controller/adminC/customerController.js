@@ -57,7 +57,7 @@ const loadadminorderinfopage=async (req,res)=>{
     console.log(User);
     const orderData = await orderModel.find({ _id: id }).populate('items.product')
     
-    res.render('admin/orderinfo-Page', { orderData:orderData,admin:admin,user:User });
+    res.render('admin/orderinfo-page', { orderData:orderData,admin:admin,user:User });
 
   } catch (error) {
     console.log("Error in loading order information page:", error);
