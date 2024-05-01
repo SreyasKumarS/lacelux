@@ -299,8 +299,15 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(data.error);
-            } else {
+            Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: data.error,
+            showConfirmButton: false, // Hide the "OK" button
+            timer: 4000 // Auto-close the alert after 3 seconds
+        });
+        return;
+         } else {
                 Swal.fire({
                 icon: 'success',
                 title: 'Coupon Applied',
