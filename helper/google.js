@@ -9,15 +9,13 @@ const shortid = require('shortid')
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/google/callback",
+  callbackURL: "https://lacelux.minecraft.pe/google/callback",
   passReqToCallback: true
 },
 
 async function(request, accessToken, refreshToken, profile, done) {
   try {
-    console.log(profile,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
     let user = await User.findOne({ email: profile.email });
-    console.log(profile.id,'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     if (!user) {
 
       const referralCode = shortid.generate();
