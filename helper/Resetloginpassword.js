@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 //FUNCTION FOR SENDING RESETLINK EMAIL----------------------------------
 
 function sendPasswordResetEmail(email,userID) {
-  const resetLink = `http://localhost:3000/resetPwPage?userID=${userID}`;
+  const resetLink = `http://lacelux.minecraft.pe/resetPwPage?userID=${userID}`;
   transporter.sendMail({
     from: process.env.otpemail,
     to: email,
@@ -82,10 +82,10 @@ const resetPassword = async (req, res) => {
                         return res.status(400).send('Passwords do not match');
                         }
                         
-                        // Hash the new password
+                      
                         const newPass = await bcrypt.hash(password, 10);
 
-                        // Update the user's password in the database
+                        
                         
                         await userModel.findOneAndUpdate(
                           { _id: userID },
