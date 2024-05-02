@@ -452,7 +452,7 @@ const deleteaddress = async (req,res)=>{
 }}
 
 
-//user checkout page-------------------------------------------------------------------
+//--------user checkout page-------------------------------------------------------------------
 
 const loadusercheckoutpage=async function(req,res){
   const userId = req.session.user._id;
@@ -470,17 +470,66 @@ const loadusercheckoutpage=async function(req,res){
       .populate('items.product'); 
 
 
-const outOfStockProducts = product.filter(item => item.items[0].product.stock === 0);
-const outOfStockProductNames = outOfStockProducts.map(item => item.items[0].product.productName);
+// const outOfStockProducts = product.filter(item => item.items[0].product.stock === 0 );
+// const outOfStockProductNames = outOfStockProducts.map(item => item.items[0].product.productName);
+// console.log(outOfStockProducts,'1111111');
+// console.log(outOfStockProductNames,'222222222');
 
  
-const allProductsAvailable = product.every(item => item.items[0].product.stock > 0);    
+// const allProductsAvailable = product.every(item => item.items[0].product.stock > 0);    
 
- if (!allProductsAvailable) {
+//  if (!allProductsAvailable) {
   
-  req.flash('error',`The following products are currently out of stock: ${outOfStockProductNames.join(', ')} kindly remove the product from your cart and proceed with your order`)
-  return res.redirect('/cartpage')
+//   req.flash('error',`The following products are currently out of stock: ${outOfStockProductNames.join(', ')} kindly remove the product from your cart and proceed with your order`)
+//   return res.redirect('/cartpage')
+// }
+
+
+
+const outOfStockItems = product.filter(cartItem => cartItem.items.some(item => item.product.stock === 0));
+const outOfStockProductNames = outOfStockItems.flatMap(cartItem =>
+  cartItem.items.filter(item => item.product.stock === 0).map(item => item.product.productName)
+);
+
+console.log(outOfStockItems, 'Out of stock items');
+console.log(outOfStockProductNames, 'Out of stock product names');
+
+const allProductsAvailable = product.every(cartItem =>
+  cartItem.items.every(item => item.product.stock > 0)
+);
+if (!allProductsAvailable) {
+  const errorMessage = `The following products are currently out of stock: ${outOfStockProductNames.join(', ')}. Kindly remove these products from your cart and proceed with your order.`;
+  req.flash('error', errorMessage);
+  return res.redirect('/cartpage');
 }
+
+
+
+
+const itemsWithExceededQuantity = product.filter(cartItem =>
+  cartItem.items.some(item => item.product.stock < item.quantity)
+);
+const itemsWithExceededQuantityDetails = itemsWithExceededQuantity.flatMap(cartItem =>
+  cartItem.items.filter(item => item.product.stock < item.quantity).map(item => ({
+    Name: item.product.productName,
+    Stock: item.product.stock
+  }))
+);
+
+console.log(itemsWithExceededQuantity, 'Items with exceeded quantity');
+console.log(itemsWithExceededQuantityDetails, 'Items with exceeded quantity details');
+
+const allQuantitiesValid = product.every(cartItem =>
+  cartItem.items.every(item => item.product.stock >= item.quantity)
+);
+
+if (!allQuantitiesValid) {
+  const errorMessage = `The following products have quantities that exceed available stock: ${itemsWithExceededQuantityDetails.map(product => `${product.Name} (Available stock: ${product.Stock})`).join(', ')}. Please reduce the quantities accordingly.`;
+  req.flash('error', errorMessage);
+  return res.redirect('/cartpage');
+}
+
+
 
  res.render('user/usercheckout-page',{user:req.session.user,data,product, wallet: wallet ? wallet : { balance: 0 },coupons:coupons})
 }
