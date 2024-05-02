@@ -17,6 +17,8 @@ const loadproductlist= async function(req,res){
   }
 };
 
+
+
 //add product page--------------------------------------------------
 const loadaddProductPage = async(req,res)=>{
   try {
@@ -61,11 +63,11 @@ const addproducts = async (req, res) => {
               
               for (let i = 0; i < req.files.length; i++) {
                   const file = req.files[i];
-                  console.log("File MIME Type:", file.mimetype); 
+                  
           
-                  // Check if the file is an image (only allow image/jpeg, image/png, and image/gif)
+                  
                   if (!(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif')) {
-                      console.log("Invalid File MIME Type:", file.mimetype);
+                      
                       const errormessage = "Cannot Add product. Please upload images in JPEG, PNG, or GIF format only.";
                       return res.json({ success: false, fileerrormessage: errormessage });
                   }
@@ -153,9 +155,9 @@ const loadeditProductPage = async(req,res)=>{
 
 const productupdate = async (req, res) => {
     try {
-        console.log("req now in productUpdate ");
+        
         const id = req.params.id;
-        console.log(id)
+  
         const data = req.body;
         const images = [];
   
@@ -171,13 +173,13 @@ const productupdate = async (req, res) => {
                 const prodata = await productModel.findById({_id:id})
                 prodata.productImage.push(...images)
                 prodata.save()
-                console.log(prodata.productImage);
+                
             }
 
         if (!duplicate || duplicate._id.toString() === id) {
              
             
-            console.log("Yes product name available or it's the same product.");
+            
   
        
             await productModel.findByIdAndUpdate(
@@ -207,6 +209,8 @@ const productupdate = async (req, res) => {
     }
   };
 
+
+
 //delete image function----------------------------------------------------------------------------------------
 
 const deleteImage = async (req, res) => {
@@ -221,7 +225,7 @@ try {
     const updatedImages = product.productImage.filter(img => img !== imageName);
     product.productImage = updatedImages;
 
-    // Save the updated product
+   
     await product.save();
 
     return res.json({ success: true, message: 'Image deleted successfully' });
@@ -235,26 +239,26 @@ try {
 
 const productoffer = async (req, res) => {
     try {
-        const { productId, discount } = req.query; // Accessing query parameters
+        const { productId, discount } = req.query; 
 
-        // Find the product by ID
+        
         const product = await productModel.findById(productId);
         if (!product) {
             return res.status(404).send({ success: false, message: 'Product not found' });
         }
 
-        // Save the current regular price as the old price
+        
         const oldRegularPrice = product.regularPrice;
 
-        // Calculate new regular price after applying the discount
+        
         const newRegularPrice = oldRegularPrice - discount;
         
-        // Update the product prices
+       
         product.regularPrice = newRegularPrice;
         product.discount = discount;
-        product.oldPrice = oldRegularPrice; // Update the old price
+        product.oldPrice = oldRegularPrice; 
 
-        // Save the updated product
+        
         await product.save();
 
         res.send({ success: true, message: 'Discount applied successfully', data: product });

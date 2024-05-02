@@ -6,7 +6,7 @@ const couponModel=require('../../model/couponModel')
 const loadcouponmanagementpage = async function (req, res) {
   const admin = req.session.admin;
   const coupons =await couponModel.find({})
-  console.log(coupons);
+ 
   try {
       res.render('admin/coupon-page', { admin: admin, coupons:coupons });
   } catch (error) {
@@ -37,7 +37,7 @@ const createcouponfunction = async function (req, res) {
 
         // Check if a coupon with the same name already exists for the user
         const existingCoupon = await couponModel.findOne({  coupon: coupon });
-        console.log(existingCoupon);
+       
 
         if (!existingCoupon) {
             const newCoupon = new couponModel({
@@ -69,9 +69,9 @@ const createcouponfunction = async function (req, res) {
 const  listOrUnlistcoupon= async (req, res) => {
     try {
         const id = req.query.id;
-        console.log(id,'iddddddddddddddddddddddddddddddddddddddd');
+        
         const coupon = await couponModel.findOne({ _id: id });
-        console.log(coupon,'pnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+        
   
         if (!id || !coupon) {
             return res.status(400).json({ success: false, message: 'Invalid coupon ID' });

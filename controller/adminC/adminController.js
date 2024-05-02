@@ -142,15 +142,15 @@ const generateSalesreport = async (req, res, next) => {
 
     let startDateObj, endDateObj;
     if (interval === 'weekly') {
-      // Calculate the start date as 7 days ago from the end date
+    
       endDateObj = new Date(endDate);
       startDateObj = new Date(endDateObj);
-      startDateObj.setDate(endDateObj.getDate() - 7); // Adjusted to subtract 7 days
+      startDateObj.setDate(endDateObj.getDate() - 7); 
     } else {
-      // For daily, monthly, yearly, and custom intervals, use the provided start and end dates
+     
       startDateObj = new Date(startDate);
       endDateObj = new Date(endDate);
-      endDateObj.setHours(23, 59, 59, 999); // Set end date to end of the day
+      endDateObj.setHours(23, 59, 59, 999); 
     }
 
     const reportData = await orderModel.aggregate([
@@ -190,52 +190,6 @@ const generateSalesreport = async (req, res, next) => {
 
 
 
-// const generateSalesreport = async (req, res, next) => {
-//   try {
-//     const { startDate, endDate } = req.body;
-
-//     const startDateObj = new Date(startDate);
-//     const endDateObj = new Date(endDate);
-
-//     endDateObj.setHours(23, 59, 59, 999);
- 
-//     const reportData = await orderModel.aggregate([
-//       {
-//         $match: {
-//           orderDate: { $gte: startDateObj, $lte: endDateObj }
-//         }
-//       },
-//       {
-//         $lookup: {
-//           from: 'products', 
-//           localField: 'items.product', 
-//           foreignField: '_id',
-//           as: 'itemsWithProductDetails'
-//         }
-//       },
-//       {
-//         $group: {
-//           _id: "$_id",
-//           orderId: { $first: "$_id" },
-//           date: { $first: "$orderDate" },
-//           totalPrice: { $first: "$totalPrice" },
-//           products: { $push: "$itemsWithProductDetails.productName" },
-//           firstName: { $first: "$billingDetails.name" },
-//           address: { $first: "$billingDetails.houseName" },
-//           paymentMethod: { $first: "$paymentMethod" },
-//           paymentStatus: { $first: "$paymentStatus" }
-//         }
-//       }
-//     ]);
-    
-//     res.json({ reportData });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-
-
 
 //-------------------loadbestsellerspage---------------------------------------------------------------------
 
@@ -247,10 +201,10 @@ const loadbestsellerspage = async function(req, res) {
       { $unwind: '$items' },
       { $group: { _id: '$items.product', totalQuantity: { $sum: '$items.quantity' } } },
       { $sort: { totalQuantity: -1 } },
-      { $limit: 5 }, // Adjust the limit as needed
+      { $limit: 5 }, 
       {
           $lookup: {
-              from: 'products', // Assuming your products collection is named 'products'
+              from: 'products', 
               localField: '_id',
               foreignField: '_id',
               as: 'productDetails'
@@ -270,10 +224,7 @@ const loadbestsellerspage = async function(req, res) {
           }
       }
   ]);
-  console.log(bestSellingProducts);
-
-   // Get the best-selling category
-
+ 
 
    const bestSellingCategories = await orderModel.aggregate([
     { $unwind: '$items' },
@@ -293,10 +244,10 @@ const loadbestsellerspage = async function(req, res) {
         }
     },
     { $sort: { totalQuantity: -1 } },
-    { $limit: 5 }, // Adjust the limit as needed
+    { $limit: 5 }, 
     {
         $lookup: {
-            from: 'categories', // Assuming your categories collection is named 'categories'
+            from: 'categories', 
             localField: '_id',
             foreignField: '_id',
             as: 'categoryDetails'
@@ -336,7 +287,7 @@ const bestSellingBrands = await orderModel.aggregate([
       }
   },
   { $sort: { totalQuantity: -1 } },
-  { $limit: 5 }, // Adjust the limit as needed
+  { $limit: 5 }, 
   {
       $project: {
           _id: 0,
@@ -345,7 +296,7 @@ const bestSellingBrands = await orderModel.aggregate([
       }
   }
 ]);
-    // Pass the bestSellingProducts data to the rendered EJS template
+
     res.render('admin/bestsellers-page', { bestSellingProducts: bestSellingProducts,bestSellingCategory:bestSellingCategories,bestSellingBrands :bestSellingBrands });
   } catch (error) {
     console.error('Error loading best selling products page:', error);
@@ -359,32 +310,32 @@ const showChart = async (req, res) => {
     const monthlySalesData = await orderModel.aggregate([
       {
         $match: {
-          "items.status": "Delivered", // Filter for delivered items
+          "items.status": "Delivered", 
           "orderDate": {
-            $gte: new Date("2024-01-01"), // Start of the year
-            $lt: new Date("2024-12-31")   // End of the year
+            $gte: new Date("2024-01-01"), 
+            $lt: new Date("2024-12-31")   
           }
         }
       },
       {
-        $unwind: "$items" // Unwind the items array to work with individual items
+        $unwind: "$items" 
       },
       {
         $match: {
-          "items.status": "Delivered" // Exclude cancelled items
+          "items.status": "Delivered" 
         }
       },
       {
         $group: {
           _id: {
-            month: { $month: "$orderDate" }, // Group by month
-            year: { $year: "$orderDate" }    // Group by year
+            month: { $month: "$orderDate" }, 
+            year: { $year: "$orderDate" }    
           },
-          totalAmount: { $sum: "$items.price" }, // Sum up the price for each month
-          countDelivered: { $sum: 1 } // Count the number of delivered items
+          totalAmount: { $sum: "$items.price" }, 
+          countDelivered: { $sum: 1 } 
         }
       },
-      { $sort: { "_id.year": 1, "_id.month": 1 } } // Sort by year and month
+      { $sort: { "_id.year": 1, "_id.month": 1 } } 
     ]);
     
     console.log("Monthly Sales Data:", monthlySalesData);
@@ -399,27 +350,27 @@ const showChart = async (req, res) => {
         $match: { 
           "items.status": "Delivered", 
           "orderDate": { 
-            $gte: new Date("2024-04-01"), // Start of the month
-            $lt: new Date("2024-04-30")   // End of the month
+            $gte: new Date("2024-04-01"), 
+            $lt: new Date("2024-04-30")   
           } 
         } 
       },
       { 
-        $unwind: "$items" // Unwind the items array to work with individual items
+        $unwind: "$items" 
       },
       { 
         $match: { 
-          "items.status": "Delivered" // Ensure the item status is Delivered after unwinding
+          "items.status": "Delivered" 
         } 
       },
       { 
         $group: { 
-          _id: { day: { $dayOfMonth: "$orderDate" } }, // Group by day of month
-          totalAmount: { $sum: "$items.price" }, // Sum up the price for each day
-          countDeliveredItems: { $sum: 1 } // Count the number of delivered items
+          _id: { day: { $dayOfMonth: "$orderDate" } }, 
+          totalAmount: { $sum: "$items.price" }, 
+          countDeliveredItems: { $sum: 1 } 
         } 
       },
-      { $sort: { "_id.day": 1 } } // Sort by day of month
+      { $sort: { "_id.day": 1 } } 
     ]);
     
     console.log("Daily Sales Data:", dailySalesData);
@@ -430,20 +381,20 @@ const showChart = async (req, res) => {
 
 
 
-    // Aggregate order statuses
+    
     const orderStatuses = await orderModel.aggregate([
-      { $unwind: "$items" }, // Flatten the items array
+      { $unwind: "$items" }, 
       {
         $group: {
-          _id: "$items.status", // Group by the status in items
-          count: { $sum: 1 } // Count occurrences of each status
+          _id: "$items.status", 
+          count: { $sum: 1 } 
         }
       }
     ]);
 
-    console.log("Order Statuses:", orderStatuses);
+    
 
-    // Map order statuses to object format
+    
     const eachOrderStatusCount = {};
     orderStatuses.forEach((status) => {
       eachOrderStatusCount[status._id] = status.count;

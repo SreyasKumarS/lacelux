@@ -11,6 +11,7 @@ const loadcartpage = async function(req, res) {
     
       const userId = req.session.user._id;
       const data = await cartModel.find({ userId: userId }).populate('items.product')
+
       //sorting for latest added product at top-----
       data.forEach(cart => {
         cart.items.sort((a, b) => new Date(b.cartDate) - new Date(a.cartDate));
@@ -99,7 +100,7 @@ const updateQuantity = async function(req, res) {
       const cartItem = userCart[0].items.find(item => item.product.toString() === productId);
     if (cartItem) {
         subtotal = cartItem.price * newQuantity; 
-        console.log(subtotal);
+      
       }
     }
    
@@ -183,36 +184,35 @@ const retryOrderFunction = async function (req, res) {
   try {
     const userId = req.session.user._id;
     const orderId = req.params.orderId;
-    console.log('Order ID:', orderId);
+  
 
-    // Find the order by ID using your original orderModel
+    
     const order = await orderModel.findById(orderId);
-    console.log('Found Order:', order);
+
 
     if (!order) {
-      console.log('Order not found');
+      
       return res.status(404).json({ error: 'Order not found' });
     }
 
     if (order.paymentStatus === 'Pending') {
-      console.log('Payment status is Pending');
-      // Update the payment status to 'Paid'
+     
+      
       order.paymentStatus = 'Paid';
       await order.save();
 
-      console.log('Payment status updated successfully');
-      // Render the thank you page after updating the payment status
+      
       res.json({ 
         success: true,
         message: 'Payment status updated successfully',
         orderId: orderId,
         userId: userId,
-        user: req.session.user, // Include user session data all this for pdf invoice download
+        user: req.session.user, 
         order:order });
 
 
     } else {
-      console.log('Order payment status is not Pending');
+     
       return res.status(400).json({ error: 'Order payment status is not Pending' });
     }
   } catch (error) {
@@ -229,11 +229,8 @@ const loadretrythankyoupage= async function(req,res){
 
     const orderId = req.query.orderId;
     
-    // Now you can use orderId, userId, user, and order as needed
-    console.log('Order ID:', orderId);
-
     const Order =  await orderModel.findById(orderId).populate('items.product').exec()
-    console.log("order here:" ,Order);
+   
   
     res.render('user/thankyou-page', {
       orderId: orderId,
@@ -242,7 +239,7 @@ const loadretrythankyoupage= async function(req,res){
     });
 
   }catch (error) {
-    // Handle any errors that may occur during processing
+    
     console.error('Error loading retry thank you page:', error);
     res.status(500).json({ error: 'Internal server error' });
   }

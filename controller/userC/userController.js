@@ -462,8 +462,7 @@ const loadusercheckoutpage=async function(req,res){
   const coupons = await couponModel.find({ userId: { $nin: [userId] } });
   const data = await userModel.findOne({ email: req.session.user.email });
   const wallet= await walletModel.findOne({userId:userId})
-  console.log(wallet); 
-  console.log(wallet ? wallet.balance : 'Wallet not found'); 
+
 
 
   const product = await cartModel
@@ -579,7 +578,7 @@ const placeorderfunction = async function (req, res) {
         country: address.country,
       };
       
-      // const paymentStatus = payment_option === 'RazorPay' ? 'Paid' : payment_option === 'Wallet' ? 'Paid': 'Pending';
+      
       const paymentStatus = (payment_option === 'RazorPay' && !RazPayFail) ? 'Paid' : (payment_option === 'Wallet') ? 'Paid':'Pending';
 
       const newOrder = new orderModel({
@@ -625,12 +624,12 @@ const placeorderfunction = async function (req, res) {
         await transaction.save();
       }
      const order = await orderModel.findById(newOrder._id).populate('items.product').exec()
-     console.log(order,'failureeeeeeeeeeeeeeeee');
+     
 
       res.render('user/thankyou-page', {
         orderId: newOrder._id,
         userId: userId,
-        user: req.session.user, // Include user session data all this for pdf invoice download
+        user: req.session.user, 
         order:order
       });
 
@@ -652,9 +651,9 @@ const loadorderinfopage= async function(req,res){
 try{  
   const user=req.session.user
   const {id}=req.query;
-  console.log(`this ${id}`);
+  
   const orderData = await orderModel.find({ _id: id }).populate('items.product')
-  console.log("helloooo",orderData);
+  
 
   res.render('user/orderinfo-page', {user:user,orderData:orderData})
 }catch{
@@ -766,8 +765,8 @@ const cancelOrderFunction = async (req, res) => {
 
         if (!userWallet) {
           userWallet = await walletModel.create({
-            userId: updatedOrder.userID, // Use updatedOrder.userID to create the wallet
-            balance: refundAmount, // Set initial balance as 0 or any other default value
+            userId: updatedOrder.userID, 
+            balance: refundAmount, 
           });
           await userWallet.save();
 
@@ -839,10 +838,8 @@ const returnOrderFunction = async (req, res) => {
         return res.status(404).send('Product not found.');
       }
 
-      // Calculate the refund amount based on the canceled item's price and quantity
       const refundAmount = canceledItem.price * canceledItem.quantity;
 
-      // Refund to wallet for products purchased via Razorpay or Wallet
       if (updatedOrder.paymentMethod === 'RazorPay' || updatedOrder.paymentMethod === 'Wallet') {
         const userWallet = await walletModel.findOne({ userId: updatedOrder.userID });
 
@@ -850,13 +847,13 @@ const returnOrderFunction = async (req, res) => {
           return res.status(404).send('User wallet not found.');
         }
 
-        userWallet.balance += refundAmount; // Credit the refund amount back to the wallet
+        userWallet.balance += refundAmount; 
         await userWallet.save();
 
-        // Create a transaction record for the refund
+        
         const transaction = new transactionModel({
           userId: updatedOrder.userID,
-          amount: refundAmount, // Negative amount for refunds
+          amount: refundAmount, 
           status: 'Completed',
           type: 'Refund',
         });
@@ -886,7 +883,7 @@ const returnOrderFunction = async (req, res) => {
 const searchforitemsfunction = async (req, res, next) => {
   try {
     const searchTerm = req.query.q;
-    console.log('Search Term:', searchTerm); // Log the search term
+    
 
     const searchResult = await productModel.find({ 
       $or: [
@@ -928,8 +925,8 @@ const loadwishlistpage = async function(req, res) {
     const data = await wishlistModel.findOne({ userId }).populate('items.product');
     
     if (!data || !data.items || data.items.length === 0) {
-      // Handle case where wishlist data is empty or undefined
-      res.render('user/wishlist-page', { user: userId, data: null }); // Pass null data to template
+      
+      res.render('user/wishlist-page', { user: userId, data: null }); 
     } else {
       data.items.sort((a, b) => b.wishDate - a.wishDate);
       res.render('user/wishlist-page', { user: userId, data });
@@ -1023,12 +1020,12 @@ const loadwallet = async function(req, res) {
   try {
     const user = req.session.user._id;
 
-    // Fetch the user's data including the referral code
+   
     const userreferral = await userModel.findById(user).select('referralCode');
 
     let userWallet = await walletModel.findOne({ userId: user });
     
-    // Set balance to zero for new users without a wallet
+   
     if (!userWallet) {
       userWallet = { balance: 0 };
     }
@@ -1089,9 +1086,9 @@ const depositwalletfunction = async function (req, res) {
 const couponapplyfunction = async function (req, res) {
   try {
     const { couponCode } = req.query;
-    console.log(couponCode);
+   
     const coupon = await couponModel.findOne({ coupon: couponCode });
-    console.log(coupon);
+   
     if (!coupon) {
       return res.status(404).json({ message: 'Coupon not found' });
     }
@@ -1103,13 +1100,13 @@ const couponapplyfunction = async function (req, res) {
       return res.status(404).json({ message: 'Cart not found' });
     }
 
-    // Check if the totalAmount is less than the minimum purchase amount specified in the coupon
+    
     if (totalAmount < coupon.minimumamount) {
       return res.status(400).json({ error: `Minimum purchase amount required to apply this coupon is ${coupon.minimumamount}` });
     }
 
 
-     // Add user's ID to the usedBy array in the coupon document
+     
      coupon.userId.push(userId);
      await coupon.save();
  
@@ -1144,7 +1141,7 @@ const generateInvoicefunction = async function (req, res) {
     const order = await orderModel.findOne({ _id: orderId, userID: userId }).populate('items.product');
   
     if (!order) {
-      console.log("order illa")
+     
       return res.status(404).send('Order not found');
     }
     const htmlContent = `
@@ -1279,7 +1276,7 @@ const generateInvoicefunction = async function (req, res) {
     const pdfBuffer = await page.pdf({ format: 'A4' }); 
   
     await browser.close();
-    console.log("all set")
+   
     
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="invoice.pdf"`);
@@ -1291,46 +1288,44 @@ const generateInvoicefunction = async function (req, res) {
   }
 };
 
+
+
 //-----------------------------------------------------------------------------------------
 const changepasswordFunction = async (req, res) => {
   try {
       const userId = req.session.user._id;
       const { email, password, npassword, cpassword } = req.body;
 
-      console.log('User ID:', userId);
-      console.log('Received Email:', email);
-      console.log('Received Passwords:', password, npassword, cpassword);
-
-      // Validate email and password against your database
+    
       const user = await userModel.findById(userId);
-      console.log('User:', user);
+     
 
       if (!user) {
-          console.log('User not found');
+          
           return res.status(400).json({ success: false, message: 'User not found' });
       }
 
-      // Check if new password matches confirm password
+      
       if (npassword !== cpassword) {
-          console.log('New password and confirm password do not match');
+          
           return res.status(400).json({ success: false, message: 'New password and confirm password do not match' });
       }
 
-      // Compare current password with hashed password from the database
+     
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      console.log('isPasswordValid:', isPasswordValid);
+      
 
       if (!isPasswordValid) {
-          console.log('Invalid current password');
+          
           return res.status(400).json({ success: false, message: 'Invalid current password' });
       }
 
-      // Hash the new password before updating
+      
       const hashedPassword = await bcrypt.hash(npassword, 10);
 
-      console.log('Updating password:', user.password, 'to', hashedPassword);
+      
 
-      // Update the user's password in the database
+      
       user.password = hashedPassword;
       await user.save();
 

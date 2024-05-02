@@ -53,12 +53,6 @@ passport.deserializeUser(function(user,done){
 const googleauth = passport.authenticate('google', { scope: ["email", "profile"] });
 
 
-// const goog = passport.authenticate('google', {
-
-//   successRedirect: '/',
-//   failureRedirect: '/userregister'
-// });
-
 const goog = (req, res, next) => {
   passport.authenticate('google', (err, user, info) => {
     if (err) { return next(err); }

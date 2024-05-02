@@ -35,6 +35,8 @@ const  blockOrUnblockcustomer= async (req, res) => {
   }
 };
 
+
+
 //order management page---------------------------------------------------------------------
 
 const loadordermanagement = async (req, res) => {
@@ -47,14 +49,17 @@ const loadordermanagement = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 }
+
+
+
 //order info page function------------------------------------------------------------------------
 const loadadminorderinfopage=async (req,res)=>{
   try{
     const admin=req.session.admin;
     const {id,user}=req.query;
-    console.log(`user id: ${user}`);
+   
     const User= await userModel.findById({_id:user})
-    console.log(User);
+    
     const orderData = await orderModel.find({ _id: id }).populate('items.product')
     
     res.render('admin/orderinfo-page', { orderData:orderData,admin:admin,user:User });
@@ -69,7 +74,7 @@ const loadadminorderinfopage=async (req,res)=>{
 //status updation----------------------------------------------------------------------------------
 
 const statusUpdationFunction = async (req, res) => {
-  const { itemId, newStatus } = req.body;
+const { itemId, newStatus } = req.body;
 
   try {
     

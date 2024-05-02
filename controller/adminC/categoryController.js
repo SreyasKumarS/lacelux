@@ -48,11 +48,11 @@ const loadaddToCategory = async(req,res)=>{
 //list&unlist function-----------------------------------------------------
 const loadunlistorlist = async (req, res) => {
   try {
-      console.log("req for list or unlist");
+      
       const id = req.query.id;
-      console.log("/////" + id);
+      
       const category = await categoryModel.findById(id);
-      console.log(category);
+
 
       if (category.islisted === true) {
           await categoryModel.findByIdAndUpdate(id, {
@@ -92,9 +92,9 @@ const loadeditcategorypage=async function(req, res) {
 const updateCategory = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
+   
     const category = req.body;
-    console.log(id)
+   
     
     const existingCategory = await categoryModel.findOne({ name: category.categoryName });
 
