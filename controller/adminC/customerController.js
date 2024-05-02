@@ -66,13 +66,13 @@ const loadadminorderinfopage=async (req,res)=>{
 }
 
 
-//status updation--------------------------------------------------------------
+//status updation----------------------------------------------------------------------------------
 
 const statusUpdationFunction = async (req, res) => {
   const { itemId, newStatus } = req.body;
 
   try {
-    // Example with MongoDB
+    
     await orderModel.updateOne({ "items._id": itemId }, { "$set": { "items.$.status": newStatus } });
     res.json({ success: true });
   } catch (error) {

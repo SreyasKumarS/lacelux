@@ -452,28 +452,7 @@ const deleteaddress = async (req,res)=>{
 }}
 
 
-//user checkout page----------------------------------------------------------
-
-// const loadusercheckoutpage=async function(req,res){
-//   const userId = req.session.user._id;
-
-
- 
-//   const coupons =await couponModel.find({})
-//   const data = await userModel.findOne({ email: req.session.user.email });
-//   const wallet= await walletModel.findOne({userId:userId})
-
-
-//   const product = await cartModel
-//       .find({ userId: userId })
-//       .populate('items.product'); 
-
-
-// console.log(product);
-
-//  res.render('user/usercheckout-page',{user:req.session.user,data,product, wallet:wallet,coupons:coupons})
-// }
-
+//user checkout page-------------------------------------------------------------------
 
 const loadusercheckoutpage=async function(req,res){
   const userId = req.session.user._id;
@@ -507,8 +486,6 @@ const allProductsAvailable = product.every(item => item.items[0].product.stock >
  res.render('user/usercheckout-page',{user:req.session.user,data,product, wallet: wallet ? wallet : { balance: 0 },coupons:coupons})
 }
    
-
-
 
 
 

@@ -33,7 +33,7 @@ function sendPasswordResetEmail(email,userID) {
 //FORGOT PASSWORD PAGE-----------------------------------------------------------------
 const loadForgotPassword = (req,res)=>{
   
-  res.render("user/forgot-Password")
+  res.render("user/forgot-password")
 }
 
 
