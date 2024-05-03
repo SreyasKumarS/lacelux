@@ -202,7 +202,7 @@ function validateForm() {
     const description = document.getElementById("descriptionX").value.trim();
     const brand = document.getElementById("brandnameX").value.trim();
     const regularPrice = parseFloat(document.getElementById("regularPriceX").value);
-    // const discount = parseFloat(document.getElementById("discountX").value);
+    const discount = parseFloat(document.getElementById("discountX").value);
     const stock = parseFloat(document.getElementById("stockQuantity").value);
    
 
@@ -229,16 +229,14 @@ function validateForm() {
         isValid = false;
     }
 
-    //  if (isNaN(discount) ) {
-    //     displayErrorMessage("discount-error", "discount must be in numbers");
-    //     isValid = false;
-    // }else if (discount <= 0 ) {
-    //     displayErrorMessage("discount-error", "discount must be a valid positive number");
-    //     isValid = false;
-    // }else if(discount >=100){
-    //     displayErrorMessage("discount-error", "discount must be lessthan 100 ");
-    //     isValid = false;
-    // }
+
+    if (discount < 0) {
+    displayErrorMessage("discount-error", "discount must be a valid positive number");
+    isValid = false;
+    } else if (isNaN(stock)) {
+    displayErrorMessage("discount-error", "discount must be in numbers");
+    isValid = false;
+}
 
     if (stock < 0) {
     displayErrorMessage("stock-error", "Stock must be a valid positive number");
