@@ -12,7 +12,8 @@
   <div class="card mb-4">
       <div class="card-body">
           <div class="card-body">
-            <form method="post" action="/updateproduct/<%= data[0]._id %>"  id="productform" onsubmit="return validateForm()" enctype="multipart/form-data" multiple>  
+            
+            <form method="post" action="/updateproduct/<%= data[0]._id %>"  id="productform" onsubmit="return validateForm()" enctype="multipart/form-data" multiple>   
                   <div class="col-lg-4 mb-4">
                       <label for="product_name" class="form-label">Product Name</label>
                       <input type="text" placeholder="typehere" value="<%=data[0].productName %>" name="productName" class="form-control border" id="productnameX">
@@ -96,33 +97,32 @@
                   </div>
 
                   <!-----CHANGE IMAGES-->
-
                   <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Choose Images</h4>
-                        </div>
-                        <div id="addedImagesContainer" class="col-md-6" style="display: flex;">
-                            <% for (let i = 0; i < data[0].productImage.length; i++) { %>
-                                <div class="mb-4" style="display: inline-block;">
-                                    <img class="rounded" style="width: 50px; height: 60px;" src="/public/photos/<%= data[0].productImage[i] %>" alt="image" data-filename="<%= data[0].productImage[i] %>" id="imgCount">
-                                    <span class="delete-icon" onclick="deleteImage('<%= data[0]._id %>', '<%= data[0].productImage[i] %>')">❌</span>
-                                </div>
-                            <% } %>
-                        </div>
-                        
-
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <img src="assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" name="images" id="imageInput" type="file" multiple>
-                                <div id="image-error" class="error-message"></div>
-                            </div>
-                        </div>
-                      </div>
-                      <div>
-                        <button class="btn btn-md rounded font-sm " id="updatebtn" type="submit" style="background-color: rgb(0, 153, 255);">Update</button>
+                    <div class="card-header">
+                        <h4>Choose Images</h4>
                     </div>
-              </form>
+                    <div id="addedImagesContainer" class="col-md-6" style="display: flex;">
+                        <% for (let i = 0; i < data[0].productImage.length; i++) { %>
+                            <div class="mb-4" style="display: inline-block;">
+                                <img class="rounded" style="width: 50px; height: 60px;" src="/public/photos/<%= data[0].productImage[i] %>" alt="image" data-filename="<%= data[0].productImage[i] %>" id="imgCount">
+                                <span class="delete-icon" onclick="deleteImage('<%= data[0]._id %>', '<%= data[0].productImage[i] %>')">❌</span>
+                            </div>
+                        <% } %>
+                    </div>
+                    
+
+                    <div class="card-body">
+                        <div class="input-upload">
+                            <img src="assets/imgs/theme/upload.svg" alt="">
+                            <input class="form-control" name="images" id="imageInput" type="file"  multiple accept="image/jpeg, image/png, image/gif">
+                            <div id="image-error" class="error-message"></div>
+                        </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn btn-md rounded font-sm " id="updatebtn" type="submit" style="background-color: rgb(0, 153, 255);">Update</button>
+                </div>
+          </form>
 
 </script>
       
@@ -193,7 +193,8 @@ function applyDiscount(productId) {
 
 
 
-//-----------------------------------------------------------------------------------------------------
+//---------------vslidationnn--------------------------------------------------------------------------------------
+
 function validateForm() {
     resetErrorMessages();
 
@@ -204,6 +205,7 @@ function validateForm() {
     const regularPrice = parseFloat(document.getElementById("regularPriceX").value);
     const discount = parseFloat(document.getElementById("discountX").value);
     const stock = parseFloat(document.getElementById("stockQuantity").value);
+    
    
 
     if (productname === "" ) {

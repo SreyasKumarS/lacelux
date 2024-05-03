@@ -153,11 +153,12 @@ const loadeditProductPage = async(req,res)=>{
 
 //product update function------------------------------------------------------------------
 
+
 const productupdate = async (req, res) => {
     try {
-        
+        console.log("req now in productUpdate ");
         const id = req.params.id;
-  
+        console.log(id)
         const data = req.body;
         const images = [];
   
@@ -173,13 +174,13 @@ const productupdate = async (req, res) => {
                 const prodata = await productModel.findById({_id:id})
                 prodata.productImage.push(...images)
                 prodata.save()
-                
+                console.log(prodata.productImage);
             }
 
         if (!duplicate || duplicate._id.toString() === id) {
              
             
-            
+            console.log("Yes product name available or it's the same product.");
   
        
             await productModel.findByIdAndUpdate(
