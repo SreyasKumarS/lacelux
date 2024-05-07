@@ -96,7 +96,7 @@
                       <div class="card-body">
                           <div class="input-upload">
                               <img src="assets/imgs/theme/upload.svg" alt="">
-                              <input class="form-control border" name="images" id="imageInput" type="file" multiple>
+                              <input class="form-control border" name="images" id="imageInput" type="file"  multiple accept="image/jpeg, image/png, image/gif">
                               <span id="fileerrormessage" class="text-center w-50 mx-auto" style="display: block;color: red; "></span>
                           </div>
                       </div>
@@ -252,16 +252,13 @@ function validateAndSubmit() {
         isValid = false;
     }
 
-     if (isNaN(discount) ) {
-        displayErrorMessage("discount-error", "discount must be in numbers");
-        isValid = false;
-    }else if (discount <= 0 ) {
-        displayErrorMessage("discount-error", "discount must be a valid positive number");
-        isValid = false;
-    }else if(discount >=100){
-        displayErrorMessage("discount-error", "discount must be lessthan 100 ");
-        isValid = false;
-    }
+    if (discount < 0) {
+    displayErrorMessage("discount-error", "discount must be a valid positive number");
+    isValid = false;
+    } else if (isNaN(stock)) {
+    displayErrorMessage("discount-error", "discount must be in numbers");
+    isValid = false;
+}
 
     if (stock <= 0) {
     displayErrorMessage("stock-error", "Stock must be a valid positive number");

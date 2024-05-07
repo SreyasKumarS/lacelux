@@ -28,7 +28,6 @@ const productSchema = mongoose.Schema({
   },
   oldPrice: {
     type: Number,
-    required: true,
   },
   discount: {
     type: Number,
