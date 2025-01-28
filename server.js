@@ -16,13 +16,14 @@ const adminAuthRoute=require('./routes/adminRouter')
 
 //setup mongodb connection
 
-const db= mongoose.connect(process.env.DB_URL)
-db.then(()=>{
-  console.log('database connected')
+const db = mongoose.connect(process.env.DB_URL);
+db.then(() => {
+  console.log('database connected');
 })
-.catch(()=>{
-  console.log('error connecting to mongodb',err);
-})
+.catch((err) => { // Include 'err' parameter here
+  console.log('error connecting to mongodb', err);
+});
+
 
 
 //setup express middleware
