@@ -9,7 +9,7 @@ const shortid = require('shortid')
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "https://lacelux.minecraft.pe/google/callback",
+  callbackURL: "https://lacelux.sbs/google/callback",
   passReqToCallback: true
 },
 

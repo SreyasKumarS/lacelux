@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 //FUNCTION FOR SENDING RESETLINK EMAIL----------------------------------
 
 function sendPasswordResetEmail(email,userID) {
-  const resetLink = `http://lacelux.minecraft.pe/resetPwPage?userID=${userID}`;
+  const resetLink = `http://lacelux.sbs/resetPwPage?userID=${userID}`;
   transporter.sendMail({
     from: process.env.otpemail,
     to: email,
